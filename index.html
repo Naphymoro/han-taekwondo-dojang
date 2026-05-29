@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Han Taekwondo Korea | Digital Dojang</title>
+  <meta name="description" content="Premium responsive Taekwondo academy management platform for Han Taekwondo Korea." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <svg class="icon-sprite" aria-hidden="true" focusable="false">
+    <symbol id="icon-dashboard" viewBox="0 0 24 24"><path d="M4 12.1 12 4l8 8.1V21h-5v-6H9v6H4z"/><path d="M7.5 9.7V5.5h3"/></symbol>
+    <symbol id="icon-students" viewBox="0 0 24 24"><path d="M8.5 11a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Z"/><path d="M2.7 20c.7-4 2.7-6 5.8-6s5.1 2 5.8 6"/><path d="M16.3 10.7a3 3 0 1 0 0-6"/><path d="M15.3 14.2c3 .3 5 2.2 6 5.8"/></symbol>
+    <symbol id="icon-calendar" viewBox="0 0 24 24"><path d="M4 5.5h16v15H4z"/><path d="M8 3.5v4M16 3.5v4M4 9h16"/></symbol>
+    <symbol id="icon-payments" viewBox="0 0 24 24"><path d="M3.5 7h17v10h-17z"/><path d="M3.5 10h17M7 14h5"/></symbol>
+    <symbol id="icon-belt" viewBox="0 0 24 24"><path d="M3 9h18v5H3z"/><path d="M8 9v5m8-5v5M8 14l-4 5m12-5 4 5"/></symbol>
+    <symbol id="icon-check" viewBox="0 0 24 24"><path d="m4 12.5 5 5L20 6"/></symbol>
+    <symbol id="icon-report" viewBox="0 0 24 24"><path d="M5 4h14v16H5z"/><path d="M8 15v-4m4 4V8m4 7v-6"/></symbol>
+    <symbol id="icon-settings" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.4"/><path d="M19 13.5v-3l-2-.5-.8-1.8 1-1.8-2-2-1.8 1-1.9-.8L11 2H8l-.5 2.6-1.9.8-1.8-1-2 2 1 1.8L2 10l-2 .5v3l2 .5.8 1.8-1 1.8 2 2 1.8-1 1.9.8L8 22h3l.5-2.6 1.9-.8 1.8 1 2-2-1-1.8.8-1.8z"/></symbol>
+    <symbol id="icon-phone" viewBox="0 0 24 24"><path d="M8 2.8h8a2 2 0 0 1 2 2v14.4a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V4.8a2 2 0 0 1 2-2Z"/><path d="M10.5 18.2h3"/></symbol>
+    <symbol id="icon-spark" viewBox="0 0 24 24"><path d="m12 2 1.8 6.2L20 10l-6.2 1.8L12 18l-1.8-6.2L4 10l6.2-1.8z"/><path d="m19 16 .8 2.6L22 19l-2.2.4L19 22l-.8-2.6L16 19l2.2-.4z"/></symbol>
+  </svg>
+
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="Main navigation">
+      <div class="brand">
+        <div class="brand-logo">
+          <img src="assets/logo.svg" alt="Han Taekwondo Korea logo" />
+        </div>
+        <div>
+          <strong>Han Taekwondo</strong>
+          <span>Korea Digital Dojang</span>
+        </div>
+      </div>
+
+      <nav class="main-nav" id="mainNav" aria-label="Primary">
+        <button class="active" data-view="dashboard"><svg><use href="#icon-dashboard"></use></svg><span>Dashboard</span></button>
+        <button data-view="students"><svg><use href="#icon-students"></use></svg><span>Students</span></button>
+        <button data-view="classes"><svg><use href="#icon-calendar"></use></svg><span>Classes</span></button>
+        <button data-view="attendance"><svg><use href="#icon-check"></use></svg><span>Attendance</span></button>
+        <button data-view="progress"><svg><use href="#icon-belt"></use></svg><span>Progress</span></button>
+        <button data-view="payments"><svg><use href="#icon-payments"></use></svg><span>Payments</span></button>
+        <button data-view="reports"><svg><use href="#icon-report"></use></svg><span>Reports</span></button>
+        <button data-view="settings"><svg><use href="#icon-settings"></use></svg><span>Settings</span></button>
+      </nav>
+
+      <section class="dojo-pulse" aria-label="Dojang summary">
+        <span class="pulse-dot"></span>
+        <strong>Training live today</strong>
+        <span>5 class blocks · 74 expected students</span>
+      </section>
+
+      <section class="quick-actions" aria-label="Quick actions">
+        <button>Mark attendance</button>
+        <button>Record MoMo payment</button>
+        <button>Schedule grading</button>
+      </section>
+    </aside>
+
+    <main id="main" class="main-content" tabindex="-1">
+      <header id="hero" class="hero"></header>
+      <section id="metrics" class="metrics" aria-label="Academy metrics"></section>
+      <section id="workspace" class="workspace" aria-live="polite"></section>
+    </main>
+
+    <aside id="parentPanel" class="parent-panel" aria-label="Parent mobile preview"></aside>
+  </div>
+
+  <nav class="mobile-nav" id="mobileNav" aria-label="Mobile navigation">
+    <button class="active" data-view="dashboard">Home</button>
+    <button data-view="classes">Classes</button>
+    <button data-view="students">Students</button>
+    <button data-view="progress">Progress</button>
+    <button data-view="payments">Pay</button>
+  </nav>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
