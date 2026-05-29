@@ -1,0 +1,46 @@
+name: Patch live index
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - Olympic-redesign
+    paths:
+      - '.github/workflows/patch-live-index.yml'
+      - 'js/academy-config.js'
+      - 'js/academy-api.js'
+      - 'js/live-data-bridge.js'
+
+permissions:
+  contents: write
+
+jobs:
+  patch-index:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: Olympic-redesign
+      - name: Inject live API scripts
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path('index.html')
+          text = p.read_text(encoding='utf-8')
+          marker = '<script src="js/academy-config.js"></script>'
+          block = '''\n<script src="js/academy-config.js"></script>\n<script src="js/academy-api.js"></script>\n<script src="js/live-data-bridge.js"></script>\n'''
+          if marker not in text:
+              text = text.replace('</body>', block + '</body>')
+              p.write_text(text, encoding='utf-8')
+          PY
+      - name: Commit patched index
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if ! git diff --quiet index.html; then
+            git add index.html
+            git commit -m "Inject live academy scripts into deployed index"
+            git push
+          else
+            echo "index.html already patched"
+          fi
