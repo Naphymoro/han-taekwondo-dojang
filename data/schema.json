@@ -1,0 +1,9 @@
+{
+  "Students": ["StudentID", "FirstName", "LastName", "DisplayName", "DateOfBirth", "Program", "Belt", "BeltLevel", "LessonsAttended", "LessonsRequired", "ParentID", "PrimaryInstructorID", "Status", "PromotionStatus", "CreatedAt", "UpdatedAt"],
+  "Parents": ["ParentID", "DisplayName", "Phone", "Email", "PreferredContact", "StudentIDs", "PaymentStatus", "Status", "CreatedAt", "UpdatedAt"],
+  "Instructors": ["InstructorID", "DisplayName", "Rank", "Phone", "Email", "AssignedClassIDs", "Status", "CreatedAt", "UpdatedAt"],
+  "Classes": ["ClassID", "ClassName", "Day", "StartTime", "EndTime", "Program", "InstructorID", "Capacity", "AssignedStudentIDs", "Status"],
+  "Attendance": ["AttendanceID", "Date", "ClassID", "StudentID", "InstructorID", "Status", "Notes", "CreatedAt"],
+  "Payments": ["PaymentID", "StudentID", "ParentID", "Type", "AmountRWF", "Method", "Status", "DueDate", "PaidDate", "Reference", "Notes"],
+  "Promotions": ["PromotionID", "StudentID", "CurrentBelt", "NextBelt", "LessonsReady", "PoomsaeReady", "TechniquesReady", "InstructorApproved", "FeesPaid", "ReadinessScore", "TestDate", "Status"]
+}
