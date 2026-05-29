@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Han Taekwondo Korea | Digital Dojang</title>
+  <meta name="description" content="Accessible Digital Dojang dashboard for Han Taekwondo Korea." />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="Main navigation">
+      <div class="brand">
+        <img src="assets/logo.svg" alt="Han Taekwondo Korea logo" />
+        <div>
+          <strong>Han Taekwondo</strong>
+          <span>Korea Digital Dojang</span>
+        </div>
+      </div>
+
+      <nav class="main-nav">
+        <a class="active" href="#dashboard" aria-current="page">
+          <span aria-hidden="true">⌂</span> Dashboard
+        </a>
+        <a href="#students"><span aria-hidden="true">👥</span> Students</a>
+        <a href="#classes"><span aria-hidden="true">▦</span> Classes</a>
+        <a href="#payments"><span aria-hidden="true">▣</span> Payments</a>
+        <a href="#poomsae"><span aria-hidden="true">🥋</span> Poomsae</a>
+        <a href="#attendance"><span aria-hidden="true">☑</span> Attendance</a>
+        <a href="#reports"><span aria-hidden="true">▥</span> Reports</a>
+        <a href="#settings"><span aria-hidden="true">⚙</span> Settings</a>
+      </nav>
+
+      <section class="quick-actions" aria-labelledby="quickActionsTitle">
+        <h2 id="quickActionsTitle">Quick Actions</h2>
+        <button type="button">＋ Add Student</button>
+        <button type="button">＋ Record Payment</button>
+        <button type="button">＋ Mark Attendance</button>
+        <button type="button">＋ Add Class</button>
+      </section>
+
+      <section class="instructor-card" aria-label="Signed in user">
+        <div class="avatar">MN</div>
+        <div>
+          <strong>Master Naphy</strong>
+          <span>Instructor</span>
+        </div>
+      </section>
+    </aside>
+
+    <main id="main" class="main-content" tabindex="-1">
+      <header class="top-header">
+        <div>
+          <h1>Welcome back, Master Naphy!</h1>
+          <p>Here’s what’s happening at Han Taekwondo Korea today.</p>
+        </div>
+
+        <div class="accessibility-controls" aria-label="Accessibility controls">
+          <button type="button" id="decreaseText" aria-label="Decrease text size">A−</button>
+          <button type="button" id="resetText" aria-label="Reset text size">A</button>
+          <button type="button" id="increaseText" aria-label="Increase text size">A+</button>
+          <button type="button" id="themeToggle" aria-pressed="false">☀︎ / 🌙</button>
+        </div>
+      </header>
+
+      <section id="dashboard" class="stat-grid" aria-label="Dashboard summary">
+        <article class="stat-card">
+          <div class="stat-icon red">👥</div>
+          <div>
+            <span>Total Students</span>
+            <strong id="totalStudents">0</strong>
+            <small class="positive">▲ 8 this month</small>
+          </div>
+        </article>
+        <article class="stat-card">
+          <div class="stat-icon blue">▦</div>
+          <div>
+            <span>Active Classes</span>
+            <strong id="activeClasses">0</strong>
+            <small class="positive">▲ 2 this month</small>
+          </div>
+        </article>
+        <article class="stat-card">
+          <div class="stat-icon green">▣</div>
+          <div>
+            <span>Payments Due</span>
+            <strong id="paymentsDue">0</strong>
+            <small class="warning">▲ 3 this week</small>
+          </div>
+        </article>
+        <article class="stat-card">
+          <div class="stat-icon purple">🥋</div>
+          <div>
+            <span>Belt Promotions</span>
+            <strong id="promotionsReady">0</strong>
+            <small class="link-like">Next grading: May 25</small>
+          </div>
+        </article>
+      </section>
+
+      <section class="content-grid">
+        <article id="students" class="panel">
+          <div class="panel-header">
+            <h2>Recent Students</h2>
+            <a href="#">View all</a>
+          </div>
+          <div id="studentList" class="student-list"></div>
+        </article>
+
+        <article id="classes" class="panel">
+          <div class="panel-header">
+            <h2>Today’s Classes</h2>
+            <a href="#">View all</a>
+          </div>
+          <div id="classList" class="class-list"></div>
+        </article>
+
+        <article id="payments" class="panel">
+          <div class="panel-header">
+            <h2>Payment Overview</h2>
+            <a href="#">View all</a>
+          </div>
+          <div class="payment-overview">
+            <div class="donut" aria-label="Payment status summary">
+              <div>
+                <strong id="donutTotal">0</strong>
+                <span>Students</span>
+              </div>
+            </div>
+            <div id="paymentLegend" class="payment-legend"></div>
+          </div>
+        </article>
+
+        <article id="reports" class="panel">
+          <div class="panel-header">
+            <h2>Upcoming Events</h2>
+            <a href="#">View all</a>
+          </div>
+          <div class="event-list">
+            <div class="event-item">
+              <div class="date-badge"><span>MAY</span><strong>25</strong></div>
+              <div><strong>Belt Promotion Test</strong><span>Sunday, May 25, 2025 | 2:00 PM</span></div>
+              <span aria-hidden="true">›</span>
+            </div>
+            <div class="event-item">
+              <div class="date-badge"><span>JUN</span><strong>10</strong></div>
+              <div><strong>Dojang In-House Tournament</strong><span>Tuesday, June 10, 2025 | 9:00 AM</span></div>
+              <span aria-hidden="true">›</span>
+            </div>
+            <div class="event-item">
+              <div class="date-badge"><span>JUN</span><strong>20</strong></div>
+              <div><strong>Black Belt Seminar</strong><span>Friday, June 20, 2025 | 6:00 PM</span></div>
+              <span aria-hidden="true">›</span>
+            </div>
+          </div>
+        </article>
+
+        <article id="poomsae" class="panel full-width">
+          <div class="panel-header">
+            <h2>Poomsae Progression</h2>
+            <a href="#">View library</a>
+          </div>
+          <div id="poomsaeList" class="poomsae-list"></div>
+        </article>
+      </section>
+    </main>
+
+    <aside class="phone-column" aria-label="Parent app preview">
+      <div class="phone-heading">
+        <h2>Parent App Preview</h2>
+        <p>Your dojang in parents’ hands.</p>
+      </div>
+
+      <div class="phone-frame">
+        <div class="phone-screen">
+          <header class="phone-top">
+            <strong>9:41</strong>
+            <span>●●●</span>
+          </header>
+
+          <div class="phone-toolbar">
+            <button type="button" aria-label="Open menu">☰</button>
+            <img src="assets/logo.svg" alt="" />
+            <button type="button" aria-label="Notifications">♧</button>
+          </div>
+
+          <section class="phone-section">
+            <h3>Hello, Parent!</h3>
+            <p>Here’s your child’s overview.</p>
+          </section>
+
+          <div id="phoneChildCard" class="phone-card child-card"></div>
+
+          <section class="phone-section">
+            <div class="phone-section-header">
+              <h3>Upcoming Classes</h3>
+              <a href="#">View all</a>
+            </div>
+            <div id="phoneClasses" class="phone-stack"></div>
+          </section>
+
+          <section class="phone-section">
+            <div class="phone-section-header">
+              <h3>Recent Payments</h3>
+              <a href="#">View all</a>
+            </div>
+            <div id="phonePayments" class="phone-stack"></div>
+          </section>
+
+          <section class="phone-section announcement">
+            <strong>📣 Belt Promotion Test</strong>
+            <span>May 25, 2025 | 2:00 PM</span>
+          </section>
+
+          <nav class="phone-nav" aria-label="Parent app navigation">
+            <a class="active" href="#">Home</a>
+            <a href="#">Classes</a>
+            <a href="#">Payments</a>
+            <a href="#">Profile</a>
+          </nav>
+        </div>
+      </div>
+
+      <div class="phone-controls">
+        <button type="button" id="phoneTheme">☀ Light / Dark Mode</button>
+        <button type="button" id="phoneText">Aᴀ Text Size</button>
+        <button type="button" id="highContrast">◐ High Contrast</button>
+      </div>
+    </aside>
+  </div>
+
+  <footer class="footer">© 2025 Han Taekwondo Korea. Accessible Digital Dojang prototype.</footer>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
