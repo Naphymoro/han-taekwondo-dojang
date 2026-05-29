@@ -1,0 +1,1793 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+<title>Han Taekwondo Korea · Digital Dojang</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   TOKENS
+═══════════════════════════════════════════════════════════════ */
+:root {
+  --bg:        #06080D;
+  --bg2:       #0B0F18;
+  --bg3:       #0F1420;
+  --surface:   #131929;
+  --card:      #161D2E;
+  --lift:      #1C2538;
+  --border:    rgba(255,255,255,.06);
+  --border2:   rgba(255,255,255,.12);
+
+  --crimson:   #FF1E3C;
+  --crimson2:  #CC1430;
+  --crimson-g: rgba(255,30,60,.18);
+  --crimson-s: rgba(255,30,60,.5);
+
+  --gold:      #FFB800;
+  --gold-g:    rgba(255,184,0,.15);
+  --gold-s:    rgba(255,184,0,.45);
+
+  --teal:      #00E5C0;
+  --teal-g:    rgba(0,229,192,.12);
+
+  --ice:       #A8D4FF;
+  --ice-g:     rgba(168,212,255,.1);
+
+  --white:     #FFFFFF;
+  --fg:        #E2E8F4;
+  --muted:     #7A8BA8;
+  --dim:       #3A4A62;
+
+  --r:         10px;
+  --r2:        16px;
+  --r3:        22px;
+  --sw:        260px;
+  --hh:        68px;
+
+  --ease:      cubic-bezier(.4,0,.2,1);
+  --spring:    cubic-bezier(.34,1.56,.64,1);
+  --t1:        .15s;
+  --t2:        .3s;
+  --t3:        .5s;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Outfit', sans-serif;
+  background: var(--bg);
+  color: var(--fg);
+  min-height: 100vh;
+  overflow: hidden;
+  display: flex;
+  cursor: default;
+}
+
+/* ── GLOBAL CANVAS NOISE OVERLAY ── */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  opacity: .018;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+button { cursor: pointer; border: none; background: none; font-family: inherit; color: inherit; }
+svg { display: block; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+input, select { font-family: inherit; }
+
+/* ═══════════════════════════════════════════════════════════════
+   SCROLLBAR
+═══════════════════════════════════════════════════════════════ */
+::-webkit-scrollbar { width: 3px; height: 3px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--dim); border-radius: 3px; }
+
+/* ═══════════════════════════════════════════════════════════════
+   SIDEBAR
+═══════════════════════════════════════════════════════════════ */
+.sidebar {
+  width: var(--sw);
+  min-height: 100vh;
+  background: var(--bg2);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  left: 0; top: 0; bottom: 0;
+  z-index: 200;
+  overflow-y: auto;
+  scrollbar-width: none;
+  transition: transform var(--t2) var(--ease);
+}
+.sidebar::-webkit-scrollbar { display: none; }
+
+/* Brand */
+.brand {
+  padding: 22px 20px 18px;
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  position: relative;
+}
+.brand::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 20px; right: 20px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--crimson), transparent);
+  opacity: .4;
+}
+.brand-emblem {
+  width: 44px; height: 44px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--crimson2), var(--crimson));
+  display: flex; align-items: center; justify-content: center;
+  position: relative;
+  flex-shrink: 0;
+  box-shadow: 0 0 0 1px rgba(255,30,60,.3), 0 8px 24px rgba(255,30,60,.35);
+}
+.brand-emblem::before {
+  content: '';
+  position: absolute; inset: 0;
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(255,255,255,.2) 0%, transparent 60%);
+}
+.brand-emblem svg { width: 22px; height: 22px; stroke: white; stroke-width: 2.2; position: relative; z-index: 1; }
+.brand-text { flex: 1; min-width: 0; }
+.brand-name {
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 700;
+  font-size: 17px;
+  letter-spacing: 2px;
+  color: var(--white);
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+.brand-sub {
+  font-size: 10.5px;
+  color: var(--muted);
+  letter-spacing: .8px;
+  text-transform: uppercase;
+  margin-top: 1px;
+}
+
+/* Live pill */
+.live-pill {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 14px 16px 0;
+  background: rgba(0,229,192,.06);
+  border: 1px solid rgba(0,229,192,.15);
+  border-radius: 10px;
+  padding: 9px 13px;
+}
+.live-dot {
+  width: 7px; height: 7px;
+  background: var(--teal);
+  border-radius: 50%;
+  flex-shrink: 0;
+  box-shadow: 0 0 8px var(--teal);
+  animation: livepulse 2.2s ease-in-out infinite;
+}
+@keyframes livepulse {
+  0%,100% { opacity:1; box-shadow:0 0 6px var(--teal); }
+  50%      { opacity:.7; box-shadow:0 0 14px var(--teal), 0 0 28px rgba(0,229,192,.3); }
+}
+.live-text { font-size: 11.5px; font-weight: 600; color: var(--teal); letter-spacing: .3px; }
+.live-count {
+  margin-left: auto;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--muted);
+}
+
+/* Nav */
+.nav-section-label {
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 1.8px;
+  text-transform: uppercase;
+  color: var(--dim);
+  padding: 18px 20px 6px;
+}
+.nav {
+  padding: 6px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  flex: 1;
+}
+.nav-btn {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 10px 12px;
+  border-radius: 9px;
+  color: var(--muted);
+  font-size: 13.5px;
+  font-weight: 500;
+  width: 100%;
+  text-align: left;
+  transition: all var(--t1) var(--ease);
+  position: relative;
+  letter-spacing: .2px;
+}
+.nav-btn svg { width: 17px; height: 17px; flex-shrink: 0; transition: all var(--t1); }
+.nav-btn:hover { background: var(--lift); color: var(--fg); }
+.nav-btn.active {
+  background: var(--crimson-g);
+  color: var(--white);
+  font-weight: 600;
+}
+.nav-btn.active::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 20%; bottom: 20%;
+  width: 3px;
+  background: var(--crimson);
+  border-radius: 0 3px 3px 0;
+  box-shadow: 0 0 8px var(--crimson-s);
+}
+.nav-btn.active svg { stroke: var(--crimson); }
+.nav-badge {
+  margin-left: auto;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 700;
+  background: var(--crimson);
+  color: #fff;
+  padding: 2px 7px;
+  border-radius: 20px;
+  box-shadow: 0 2px 8px var(--crimson-s);
+}
+
+/* Quick actions */
+.sidebar-footer {
+  padding: 12px 12px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  border-top: 1px solid var(--border);
+  margin-top: 8px;
+}
+.qa-btn {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 9px 12px;
+  border-radius: 9px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 500;
+  width: 100%;
+  text-align: left;
+  transition: all var(--t1) var(--ease);
+}
+.qa-btn svg { width: 14px; height: 14px; flex-shrink: 0; }
+.qa-btn:hover { background: var(--lift); color: var(--fg); border-color: var(--border2); }
+.qa-btn.accent { border-color: rgba(255,30,60,.25); color: var(--crimson); background: var(--crimson-g); }
+.qa-btn.accent:hover { background: var(--crimson); color: #fff; border-color: var(--crimson); }
+
+/* ═══════════════════════════════════════════════════════════════
+   MAIN
+═══════════════════════════════════════════════════════════════ */
+.main-wrap {
+  margin-left: var(--sw);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+/* ── TOPBAR ── */
+.topbar {
+  height: var(--hh);
+  display: flex;
+  align-items: center;
+  padding: 0 28px;
+  gap: 14px;
+  position: sticky; top: 0;
+  background: rgba(6,8,13,.8);
+  backdrop-filter: blur(20px) saturate(1.6);
+  border-bottom: 1px solid var(--border);
+  z-index: 100;
+  flex-shrink: 0;
+}
+.topbar-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.topbar-title {
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 700;
+  font-size: 21px;
+  letter-spacing: 2.5px;
+  color: var(--white);
+  text-transform: uppercase;
+}
+.topbar-sep { color: var(--dim); font-size: 16px; }
+.topbar-sub { font-size: 13px; color: var(--muted); font-weight: 400; }
+.topbar-right { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+
+/* Role switcher */
+.role-switch {
+  display: flex;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 3px;
+  gap: 2px;
+}
+.role-btn {
+  padding: 5px 14px;
+  border-radius: 7px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+  letter-spacing: .5px;
+  transition: all var(--t1) var(--ease);
+}
+.role-btn.active {
+  background: var(--crimson);
+  color: #fff;
+  box-shadow: 0 2px 10px var(--crimson-s);
+}
+
+.tb-icon {
+  width: 38px; height: 38px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--muted);
+  transition: all var(--t1);
+  position: relative;
+}
+.tb-icon svg { width: 16px; height: 16px; }
+.tb-icon:hover { background: var(--lift); color: var(--fg); border-color: var(--border2); }
+.notif-dot {
+  position: absolute;
+  top: 8px; right: 8px;
+  width: 6px; height: 6px;
+  background: var(--crimson);
+  border-radius: 50%;
+  border: 1.5px solid var(--bg);
+  box-shadow: 0 0 6px var(--crimson);
+}
+.avatar-btn {
+  width: 38px; height: 38px;
+  background: linear-gradient(135deg, var(--crimson2), var(--crimson));
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 1px;
+  box-shadow: 0 4px 12px var(--crimson-s);
+}
+.hamburger-btn {
+  display: none;
+  width: 38px; height: 38px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  align-items: center; justify-content: center;
+  color: var(--muted);
+}
+.hamburger-btn svg { width: 17px; height: 17px; }
+
+/* ═══════════════════════════════════════════════════════════════
+   CONTENT
+═══════════════════════════════════════════════════════════════ */
+.content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 30px 28px 70px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--dim) transparent;
+}
+
+/* ── PAGES ── */
+.page { display: none; }
+.page.active {
+  display: block;
+  animation: pageIn var(--t2) var(--ease) both;
+}
+@keyframes pageIn {
+  from { opacity:0; transform:translateY(10px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+
+/* ── STAGGER CHILDREN ── */
+.page.active > * {
+  animation: childIn var(--t3) var(--ease) both;
+}
+.page.active > *:nth-child(1) { animation-delay:.02s; }
+.page.active > *:nth-child(2) { animation-delay:.07s; }
+.page.active > *:nth-child(3) { animation-delay:.12s; }
+.page.active > *:nth-child(4) { animation-delay:.17s; }
+.page.active > *:nth-child(5) { animation-delay:.22s; }
+@keyframes childIn {
+  from { opacity:0; transform:translateY(12px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   HERO BANNER (Dashboard)
+═══════════════════════════════════════════════════════════════ */
+.hero-banner {
+  position: relative;
+  border-radius: var(--r3);
+  overflow: hidden;
+  margin-bottom: 22px;
+  min-height: 170px;
+  display: flex;
+  align-items: flex-end;
+  padding: 28px 32px;
+  background: linear-gradient(135deg, #0A0010 0%, #160020 40%, #1a0008 70%, #0A0C1A 100%);
+  border: 1px solid var(--border);
+}
+.hero-bg-rings {
+  position: absolute; inset: 0;
+  overflow: hidden;
+}
+.hero-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid rgba(255,30,60,.15);
+  animation: ringRotate 20s linear infinite;
+}
+.hero-ring:nth-child(1) { width: 400px; height: 400px; right: -80px; top: -120px; border-color: rgba(255,30,60,.12); animation-duration: 25s; }
+.hero-ring:nth-child(2) { width: 280px; height: 280px; right: 30px; top: -60px; border-color: rgba(255,184,0,.1); animation-duration: 18s; animation-direction: reverse; }
+.hero-ring:nth-child(3) { width: 180px; height: 180px; right: 100px; top: 10px; border-color: rgba(0,229,192,.08); animation-duration: 12s; }
+@keyframes ringRotate {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+.hero-glow {
+  position: absolute;
+  top: -40px; right: 60px;
+  width: 300px; height: 300px;
+  background: radial-gradient(ellipse, rgba(255,30,60,.18) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero-glow2 {
+  position: absolute;
+  bottom: -60px; right: 200px;
+  width: 200px; height: 200px;
+  background: radial-gradient(ellipse, rgba(255,184,0,.1) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero-content { position: relative; z-index: 1; }
+.hero-eyebrow {
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--crimson);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.hero-eyebrow::before {
+  content: '';
+  width: 24px; height: 2px;
+  background: var(--crimson);
+  border-radius: 2px;
+}
+.hero-title {
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 700;
+  font-size: 42px;
+  letter-spacing: 3px;
+  line-height: 1;
+  text-transform: uppercase;
+  color: var(--white);
+  text-shadow: 0 0 40px rgba(255,30,60,.3);
+  margin-bottom: 10px;
+}
+.hero-title span { color: var(--crimson); }
+.hero-meta {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+.hero-stat {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12.5px;
+  color: var(--muted);
+}
+.hero-stat strong { color: var(--fg); font-weight: 600; }
+.hero-stat-dot { width: 4px; height: 4px; background: var(--dim); border-radius: 50%; }
+.hero-badge {
+  position: absolute;
+  top: 24px; right: 28px;
+  background: var(--crimson-g);
+  border: 1px solid rgba(255,30,60,.3);
+  border-radius: 10px;
+  padding: 8px 16px;
+  text-align: right;
+}
+.hero-badge-val {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--crimson);
+  line-height: 1;
+  text-shadow: 0 0 20px var(--crimson-s);
+}
+.hero-badge-label { font-size: 10px; color: var(--muted); letter-spacing: .5px; margin-top: 2px; text-transform: uppercase; }
+
+/* ═══════════════════════════════════════════════════════════════
+   METRIC CARDS
+═══════════════════════════════════════════════════════════════ */
+.metrics-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin-bottom: 22px;
+}
+.metric-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--r2);
+  padding: 20px 20px 18px;
+  position: relative;
+  overflow: hidden;
+  transition: transform var(--t1) var(--ease), border-color var(--t1);
+  cursor: default;
+}
+.metric-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: var(--r2);
+  opacity: 0;
+  transition: opacity var(--t2);
+  pointer-events: none;
+}
+.metric-card:hover { transform: translateY(-3px); border-color: var(--border2); }
+.metric-card:hover::after { opacity: 1; }
+.metric-card.mc-red::after  { background: radial-gradient(ellipse at top right, rgba(255,30,60,.08), transparent 70%); }
+.metric-card.mc-gold::after { background: radial-gradient(ellipse at top right, rgba(255,184,0,.07), transparent 70%); }
+.metric-card.mc-teal::after { background: radial-gradient(ellipse at top right, rgba(0,229,192,.07), transparent 70%); }
+.metric-card.mc-ice::after  { background: radial-gradient(ellipse at top right, rgba(168,212,255,.07), transparent 70%); }
+
+.metric-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+.metric-icon {
+  width: 38px; height: 38px;
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+}
+.metric-icon svg { width: 17px; height: 17px; }
+.mc-red  .metric-icon { background: var(--crimson-g); color: var(--crimson); border: 1px solid rgba(255,30,60,.2); }
+.mc-gold .metric-icon { background: var(--gold-g);    color: var(--gold);    border: 1px solid rgba(255,184,0,.2); }
+.mc-teal .metric-icon { background: var(--teal-g);    color: var(--teal);    border: 1px solid rgba(0,229,192,.2); }
+.mc-ice  .metric-icon { background: var(--ice-g);     color: var(--ice);     border: 1px solid rgba(168,212,255,.2); }
+
+.metric-delta {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 20px;
+  font-family: 'JetBrains Mono', monospace;
+}
+.d-up   { background: rgba(0,229,192,.1); color: var(--teal); }
+.d-down { background: rgba(255,30,60,.1); color: var(--crimson); }
+.d-neu  { background: rgba(255,184,0,.1); color: var(--gold); }
+
+.metric-value {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 44px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 1px;
+  color: var(--white);
+  margin-bottom: 4px;
+}
+.mc-red  .metric-value { color: var(--crimson); text-shadow: 0 0 20px rgba(255,30,60,.3); }
+.metric-label {
+  font-size: 12px;
+  color: var(--muted);
+  font-weight: 400;
+  letter-spacing: .2px;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   SECTION HEADERS
+═══════════════════════════════════════════════════════════════ */
+.sh {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+.sh-title {
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 700;
+  font-size: 18px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--white);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.sh-title::before {
+  content: '';
+  width: 4px; height: 18px;
+  background: var(--crimson);
+  border-radius: 4px;
+  box-shadow: 0 0 8px var(--crimson-s);
+}
+.sh-btn {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+  padding: 6px 14px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  transition: all var(--t1);
+  letter-spacing: .3px;
+}
+.sh-btn:hover { color: var(--fg); border-color: var(--border2); background: var(--lift); }
+.sh-btn.primary {
+  background: var(--crimson-g);
+  border-color: rgba(255,30,60,.3);
+  color: var(--crimson);
+}
+.sh-btn.primary:hover { background: var(--crimson); color: #fff; border-color: var(--crimson); box-shadow: 0 4px 14px var(--crimson-s); }
+
+/* ═══════════════════════════════════════════════════════════════
+   2-COL GRID
+═══════════════════════════════════════════════════════════════ */
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 22px; }
+.three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+@media (max-width: 1100px) { .metrics-row { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 900px)  { .two-col { grid-template-columns: 1fr; } .three-col { grid-template-columns: 1fr 1fr; } }
+
+/* ═══════════════════════════════════════════════════════════════
+   CARD / PANEL
+═══════════════════════════════════════════════════════════════ */
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--r2);
+  overflow: hidden;
+}
+.card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px 18px;
+  border-bottom: 1px solid var(--border);
+}
+.card-title {
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--fg);
+}
+.card-action {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--muted);
+  transition: color var(--t1);
+  letter-spacing: .3px;
+}
+.card-action:hover { color: var(--crimson); }
+.card-body { padding: 16px 18px; }
+
+/* ═══════════════════════════════════════════════════════════════
+   TABLE
+═══════════════════════════════════════════════════════════════ */
+.table-wrap { background: var(--card); border: 1px solid var(--border); border-radius: var(--r2); overflow: hidden; margin-bottom: 22px; }
+table { width: 100%; border-collapse: collapse; }
+thead th {
+  text-align: left;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  color: var(--dim);
+  padding: 13px 16px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg3);
+  white-space: nowrap;
+}
+tbody tr { transition: background var(--t1); }
+tbody tr:hover { background: var(--lift); }
+tbody td {
+  padding: 12px 16px;
+  font-size: 13px;
+  color: var(--muted);
+  border-bottom: 1px solid rgba(255,255,255,.03);
+  vertical-align: middle;
+}
+tbody tr:last-child td { border-bottom: none; }
+td.name-cell { color: var(--fg); font-weight: 600; font-size: 13.5px; }
+.mono { font-family: 'JetBrains Mono', monospace; font-size: 12px; }
+
+/* ═══════════════════════════════════════════════════════════════
+   BELT BADGES
+═══════════════════════════════════════════════════════════════ */
+.belt {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 10px 3px 8px;
+  border-radius: 20px;
+  letter-spacing: .4px;
+  text-transform: uppercase;
+  font-family: 'JetBrains Mono', monospace;
+}
+.belt-swatch { width: 8px; height: 8px; border-radius: 2px; flex-shrink: 0; }
+.b-white  { background: rgba(255,255,255,.07); color: #C8D0E0; border: 1px solid rgba(255,255,255,.12); }
+.b-white  .belt-swatch { background: #E0E4F0; }
+.b-yellow { background: rgba(255,184,0,.1);  color: var(--gold);   border: 1px solid rgba(255,184,0,.2); }
+.b-yellow .belt-swatch { background: var(--gold); }
+.b-green  { background: rgba(0,230,100,.1);  color: #00E664;        border: 1px solid rgba(0,230,100,.2); }
+.b-green  .belt-swatch { background: #00E664; }
+.b-blue   { background: rgba(70,160,255,.1); color: #46A0FF;        border: 1px solid rgba(70,160,255,.2); }
+.b-blue   .belt-swatch { background: #46A0FF; }
+.b-red    { background: var(--crimson-g);    color: var(--crimson); border: 1px solid rgba(255,30,60,.25); }
+.b-red    .belt-swatch { background: var(--crimson); }
+.b-black  { background: rgba(255,255,255,.05); color: #A0A8BC; border: 1px solid rgba(255,255,255,.15); }
+.b-black  .belt-swatch { background: linear-gradient(135deg, #555, #111); border: 1px solid rgba(255,255,255,.2); }
+
+/* ═══════════════════════════════════════════════════════════════
+   STATUS PILLS
+═══════════════════════════════════════════════════════════════ */
+.pill {
+  display: inline-block;
+  font-size: 10.5px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 20px;
+  letter-spacing: .4px;
+  text-transform: uppercase;
+  font-family: 'JetBrains Mono', monospace;
+}
+.p-green { background: rgba(0,230,100,.1); color: #00E664; }
+.p-red   { background: var(--crimson-g);   color: var(--crimson); }
+.p-gold  { background: var(--gold-g);      color: var(--gold); }
+.p-blue  { background: rgba(70,160,255,.1); color: #46A0FF; }
+.p-dim   { background: rgba(255,255,255,.05); color: var(--muted); }
+
+/* ═══════════════════════════════════════════════════════════════
+   PROGRESS BAR
+═══════════════════════════════════════════════════════════════ */
+.pbar { height: 5px; background: var(--bg3); border-radius: 5px; overflow: hidden; }
+.pbar-fill { height: 100%; border-radius: 5px; transition: width .8s var(--ease); }
+.pf-red  { background: linear-gradient(90deg, var(--crimson2), var(--crimson)); box-shadow: 0 0 8px var(--crimson-s); }
+.pf-teal { background: linear-gradient(90deg, #00C4A8, var(--teal)); box-shadow: 0 0 8px rgba(0,229,192,.4); }
+.pf-gold { background: linear-gradient(90deg, #D49800, var(--gold)); box-shadow: 0 0 8px var(--gold-s); }
+.pf-dim  { background: var(--lift); }
+
+/* ═══════════════════════════════════════════════════════════════
+   SCHEDULE
+═══════════════════════════════════════════════════════════════ */
+.schedule { display: flex; flex-direction: column; gap: 8px; }
+.sched-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.sched-time {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--dim);
+  width: 90px;
+  flex-shrink: 0;
+  letter-spacing: .3px;
+}
+.sched-block {
+  flex: 1;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--dim);
+  border-radius: 0 8px 8px 0;
+  padding: 9px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: all var(--t1);
+  cursor: default;
+}
+.sched-block:hover { background: var(--lift); border-color: var(--border2); border-left-color: inherit; }
+.sched-block.live { border-left-color: var(--teal); background: rgba(0,229,192,.04); }
+.sched-name { font-size: 13px; font-weight: 600; color: var(--fg); }
+.sched-info { font-size: 11.5px; color: var(--muted); display: flex; align-items: center; gap: 8px; }
+.sched-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+
+/* ═══════════════════════════════════════════════════════════════
+   ALERTS
+═══════════════════════════════════════════════════════════════ */
+.alerts { display: flex; flex-direction: column; gap: 8px; }
+.alert {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 11px 14px;
+  border-radius: 10px;
+  background: var(--surface);
+  border-left: 3px solid transparent;
+  transition: background var(--t1);
+}
+.alert:hover { background: var(--lift); }
+.alert.a-red  { border-color: var(--crimson); }
+.alert.a-gold { border-color: var(--gold); }
+.alert.a-blue { border-color: #46A0FF; }
+.alert-ico { width: 18px; height: 18px; flex-shrink: 0; margin-top: 1px; }
+.alert.a-red  .alert-ico { color: var(--crimson); }
+.alert.a-gold .alert-ico { color: var(--gold); }
+.alert.a-blue .alert-ico { color: #46A0FF; }
+.alert-body { font-size: 12.5px; color: var(--muted); line-height: 1.45; }
+.alert-body strong { color: var(--fg); font-weight: 600; }
+
+/* ═══════════════════════════════════════════════════════════════
+   ATTENDANCE CARDS
+═══════════════════════════════════════════════════════════════ */
+.att-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px,1fr)); gap: 12px; margin-bottom: 22px; }
+.att-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--r2);
+  padding: 16px;
+  transition: all var(--t1);
+}
+.att-card:hover { transform: translateY(-2px); border-color: var(--border2); }
+.att-card.ready { border-color: rgba(0,229,192,.2); box-shadow: 0 0 0 1px rgba(0,229,192,.08), 0 8px 24px rgba(0,0,0,.3); }
+.att-name { font-size: 14px; font-weight: 700; color: var(--white); margin-bottom: 5px; }
+.att-belt-wrap { margin-bottom: 12px; }
+.att-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+.att-lbl { font-size: 11px; color: var(--dim); font-family: 'JetBrains Mono', monospace; }
+.att-val { font-size: 11px; font-weight: 700; color: var(--fg); font-family: 'JetBrains Mono', monospace; }
+.promo-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .5px;
+  text-transform: uppercase;
+  padding: 3px 9px;
+  border-radius: 20px;
+  margin-top: 8px;
+}
+.promo-tag.ready  { background: rgba(0,229,192,.1); color: var(--teal); border: 1px solid rgba(0,229,192,.2); }
+.promo-tag.near   { background: var(--gold-g); color: var(--gold); border: 1px solid rgba(255,184,0,.2); }
+.promo-tag.dan    { background: var(--ice-g); color: var(--ice); border: 1px solid rgba(168,212,255,.2); }
+
+/* ═══════════════════════════════════════════════════════════════
+   BELT PASSPORT
+═══════════════════════════════════════════════════════════════ */
+.belt-ladder { display: flex; flex-direction: column; gap: 6px; }
+.bl-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  transition: all var(--t1);
+  cursor: default;
+}
+.bl-row.earned  { border-color: rgba(0,229,192,.15); }
+.bl-row.current { border-color: rgba(255,184,0,.25); background: rgba(255,184,0,.04); }
+.bl-row.locked  { opacity: .4; }
+.bl-row:not(.locked):hover { border-color: var(--border2); transform: translateX(3px); }
+.bl-swatch { width: 26px; height: 10px; border-radius: 3px; flex-shrink: 0; }
+.bl-name { font-size: 13px; font-weight: 600; color: var(--fg); flex: 1; }
+.bl-req  { font-size: 11px; color: var(--muted); font-family: 'JetBrains Mono', monospace; }
+.bl-ico  { width: 18px; height: 18px; flex-shrink: 0; }
+.bl-row.earned  .bl-ico { color: var(--teal); }
+.bl-row.current .bl-ico { color: var(--gold); }
+.bl-row.locked  .bl-ico { color: var(--dim); }
+
+/* ═══════════════════════════════════════════════════════════════
+   PAYMENTS
+═══════════════════════════════════════════════════════════════ */
+.pay-summary {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.pay-tile {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--r2);
+  padding: 20px;
+  text-align: center;
+  transition: all var(--t1);
+}
+.pay-tile:hover { transform: translateY(-2px); border-color: var(--border2); }
+.pay-val {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: 5px;
+  letter-spacing: 1px;
+}
+.pay-tile.pt-teal .pay-val { color: var(--teal); text-shadow: 0 0 16px rgba(0,229,192,.3); }
+.pay-tile.pt-red  .pay-val { color: var(--crimson); text-shadow: 0 0 16px var(--crimson-s); }
+.pay-tile.pt-gold .pay-val { color: var(--gold); text-shadow: 0 0 16px var(--gold-s); }
+.pay-lbl { font-size: 11px; color: var(--muted); font-weight: 500; letter-spacing: .3px; }
+
+/* ═══════════════════════════════════════════════════════════════
+   REPORTS
+═══════════════════════════════════════════════════════════════ */
+.report-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px,1fr)); gap: 14px; margin-bottom: 22px; }
+.report-tile {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--r2);
+  padding: 22px 20px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: all var(--t1);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.report-tile::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--crimson);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--t2) var(--ease);
+}
+.report-tile:hover { transform: translateY(-3px); border-color: var(--border2); box-shadow: 0 12px 32px rgba(0,0,0,.3); }
+.report-tile:hover::after { transform: scaleX(1); }
+.rt-icon {
+  width: 44px; height: 44px;
+  border-radius: 11px;
+  display: flex; align-items: center; justify-content: center;
+  border: 1px solid transparent;
+}
+.rt-icon svg { width: 20px; height: 20px; }
+.rt-name { font-size: 14px; font-weight: 700; color: var(--white); }
+.rt-desc { font-size: 12px; color: var(--muted); line-height: 1.5; flex: 1; }
+.rt-cta {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+  display: flex; align-items: center; gap: 5px;
+  transition: color var(--t1);
+}
+.report-tile:hover .rt-cta { color: var(--crimson); }
+
+/* ═══════════════════════════════════════════════════════════════
+   PARENT PORTAL
+═══════════════════════════════════════════════════════════════ */
+.portal-outer {
+  display: flex;
+  justify-content: center;
+  padding: 10px 0 20px;
+}
+.portal-phone {
+  width: 380px;
+  background: var(--bg2);
+  border: 1px solid var(--border2);
+  border-radius: 28px;
+  overflow: hidden;
+  box-shadow: 0 30px 80px rgba(0,0,0,.5), 0 0 0 1px rgba(255,255,255,.06);
+  position: relative;
+}
+.portal-notch {
+  height: 28px;
+  background: var(--bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.portal-notch::after {
+  content: '';
+  width: 80px; height: 6px;
+  background: var(--bg3);
+  border-radius: 3px;
+}
+.portal-hero {
+  background: linear-gradient(135deg, #180005 0%, #220010 50%, #0F1020 100%);
+  padding: 22px 22px 20px;
+  position: relative;
+  overflow: hidden;
+}
+.portal-hero-glow {
+  position: absolute;
+  top: -30px; right: -20px;
+  width: 180px; height: 180px;
+  background: radial-gradient(ellipse, rgba(255,30,60,.2), transparent 70%);
+  pointer-events: none;
+}
+.portal-avatar {
+  width: 54px; height: 54px;
+  background: linear-gradient(135deg, var(--crimson2), var(--crimson));
+  border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: #fff;
+  box-shadow: 0 6px 20px var(--crimson-s);
+  margin-bottom: 12px;
+  position: relative;
+}
+.portal-name { font-size: 20px; font-weight: 700; color: var(--white); margin-bottom: 4px; font-family: 'Rajdhani', sans-serif; letter-spacing: 1px; }
+.portal-class { font-size: 12px; color: var(--muted); display: flex; align-items: center; gap: 8px; }
+.portal-body { padding: 18px 20px 24px; display: flex; flex-direction: column; gap: 14px; }
+.portal-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.p-stat {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px;
+  text-align: center;
+}
+.p-stat-val { font-family: 'Rajdhani', sans-serif; font-size: 30px; font-weight: 700; line-height: 1; }
+.p-stat-lbl { font-size: 10.5px; color: var(--muted); margin-top: 3px; letter-spacing: .3px; }
+.portal-block {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px;
+}
+.pb-label { font-size: 10.5px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; color: var(--dim); margin-bottom: 10px; }
+.portal-pay {
+  background: linear-gradient(135deg, #D49800, var(--gold));
+  color: #000;
+  font-weight: 800;
+  font-size: 14px;
+  padding: 14px;
+  border-radius: 12px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 6px 20px rgba(255,184,0,.35);
+  transition: all var(--t1);
+  letter-spacing: .3px;
+}
+.portal-pay:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(255,184,0,.45); }
+
+/* ═══════════════════════════════════════════════════════════════
+   SETTINGS
+═══════════════════════════════════════════════════════════════ */
+.settings-layout { display: grid; grid-template-columns: 200px 1fr; gap: 20px; align-items: start; }
+.settings-nav { display: flex; flex-direction: column; gap: 2px; }
+.sn-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 13px;
+  border-radius: 9px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--muted);
+  cursor: pointer;
+  transition: all var(--t1);
+}
+.sn-item svg { width: 15px; height: 15px; }
+.sn-item:hover { background: var(--lift); color: var(--fg); }
+.sn-item.active { background: var(--crimson-g); color: var(--crimson); font-weight: 600; }
+.form-grid { display: flex; flex-direction: column; gap: 18px; }
+.form-row { display: flex; flex-direction: column; gap: 6px; }
+.form-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.form-label { font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--dim); }
+.form-input {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  padding: 11px 14px;
+  font-size: 13.5px;
+  color: var(--fg);
+  outline: none;
+  width: 100%;
+  transition: border-color var(--t1);
+}
+.form-input:focus { border-color: var(--crimson); box-shadow: 0 0 0 3px var(--crimson-g); }
+.form-input::placeholder { color: var(--dim); }
+.save-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--crimson);
+  color: #fff;
+  font-size: 13.5px;
+  font-weight: 700;
+  padding: 11px 24px;
+  border-radius: 10px;
+  letter-spacing: .5px;
+  box-shadow: 0 6px 20px var(--crimson-s);
+  transition: all var(--t1) var(--spring);
+}
+.save-btn:hover { transform: translateY(-2px) scale(1.02); box-shadow: 0 10px 28px var(--crimson-s); }
+.save-btn svg { width: 15px; height: 15px; }
+
+/* ═══════════════════════════════════════════════════════════════
+   MOBILE NAV
+═══════════════════════════════════════════════════════════════ */
+.mobile-nav {
+  display: none;
+  position: fixed; bottom: 0; left: 0; right: 0;
+  background: rgba(11,15,24,.95);
+  backdrop-filter: blur(20px);
+  border-top: 1px solid var(--border);
+  padding: 6px 8px 14px;
+  z-index: 300;
+  justify-content: space-around;
+}
+.mob-btn {
+  display: flex; flex-direction: column; align-items: center; gap: 3px;
+  padding: 6px 12px;
+  border-radius: 9px;
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--dim);
+  letter-spacing: .4px;
+  transition: all var(--t1);
+}
+.mob-btn svg { width: 20px; height: 20px; }
+.mob-btn.active { color: var(--crimson); }
+
+/* ═══════════════════════════════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  :root { --sw: 0px; }
+  .sidebar { transform: translateX(-260px); width: 260px; }
+  .sidebar.open { transform: translateX(0); box-shadow: 20px 0 60px rgba(0,0,0,.6); }
+  .main-wrap { margin-left: 0; }
+  .mobile-nav { display: flex; }
+  .hamburger-btn { display: flex; }
+  .content { padding: 18px 16px 80px; }
+  .topbar { padding: 0 16px; }
+  .hero-banner { min-height: 140px; padding: 20px; }
+  .hero-title { font-size: 28px; }
+  .hero-badge { display: none; }
+  .metrics-row { grid-template-columns: 1fr 1fr; }
+  .pay-summary { grid-template-columns: 1fr; }
+  .settings-layout { grid-template-columns: 1fr; }
+  .three-col { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════ SIDEBAR ═══════════════ -->
+<aside class="sidebar" id="sidebar" aria-label="Main navigation">
+
+  <div class="brand">
+    <div class="brand-emblem">
+      <svg viewBox="0 0 24 24"><path d="M12 2 3 7v5c0 5.25 3.75 10.15 9 11.35C17.25 22.15 21 17.25 21 12V7z"/></svg>
+    </div>
+    <div class="brand-text">
+      <div class="brand-name">Han Taekwondo</div>
+      <div class="brand-sub">Korea · Digital Dojang</div>
+    </div>
+  </div>
+
+  <div class="live-pill">
+    <span class="live-dot"></span>
+    <span class="live-text">Training live now</span>
+    <span class="live-count">74 students</span>
+  </div>
+
+  <div class="nav-section-label">Operations</div>
+  <nav class="nav" aria-label="Primary">
+    <button class="nav-btn active" data-view="dashboard">
+      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      Dashboard
+    </button>
+    <button class="nav-btn" data-view="students">
+      <svg viewBox="0 0 24 24"><circle cx="9" cy="7" r="4"/><path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/><path d="M16 3.1a4 4 0 0 1 0 7.8M21 21v-2a4 4 0 0 0-3-3.9"/></svg>
+      Students
+      <span class="nav-badge">48</span>
+    </button>
+    <button class="nav-btn" data-view="classes">
+      <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+      Classes
+    </button>
+    <button class="nav-btn" data-view="attendance">
+      <svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>
+      Attendance
+    </button>
+
+    <div class="nav-section-label" style="padding-left:0;margin-top:4px">Academy</div>
+    <button class="nav-btn" data-view="progress">
+      <svg viewBox="0 0 24 24"><rect x="2" y="8" width="20" height="8" rx="2"/><path d="M7 8v8m10-8v8M7 16l-4 5m12-5 4 5"/></svg>
+      Belt Progress
+    </button>
+    <button class="nav-btn" data-view="payments">
+      <svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M2 10h20M6 14h4"/></svg>
+      Payments
+    </button>
+    <button class="nav-btn" data-view="reports">
+      <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 15v-4m4 4V9m4 6v-2"/></svg>
+      Reports
+    </button>
+    <button class="nav-btn" data-view="parent">
+      <svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M10 18h4"/></svg>
+      Parent Portal
+    </button>
+
+    <div class="nav-section-label" style="padding-left:0;margin-top:4px">System</div>
+    <button class="nav-btn" data-view="settings">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.68 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68h.09A1.65 1.65 0 0 0 10 3.09V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h.09a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      Settings
+    </button>
+  </nav>
+
+  <div class="sidebar-footer">
+    <button class="qa-btn accent" onclick="switchView('attendance')">
+      <svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>
+      Mark attendance
+    </button>
+    <button class="qa-btn" onclick="switchView('payments')">
+      <svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M2 10h20"/></svg>
+      Record MoMo payment
+    </button>
+    <button class="qa-btn" onclick="switchView('progress')">
+      <svg viewBox="0 0 24 24"><rect x="2" y="8" width="20" height="8" rx="2"/></svg>
+      Schedule grading
+    </button>
+  </div>
+</aside>
+
+<!-- ═══════════════ MAIN ═══════════════ -->
+<div class="main-wrap">
+
+  <!-- TOPBAR -->
+  <header class="topbar">
+    <button class="hamburger-btn" id="hamburger" aria-label="Menu">
+      <svg viewBox="0 0 24 24"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+    </button>
+    <div class="topbar-breadcrumb">
+      <span class="topbar-title" id="topTitle">DASHBOARD</span>
+      <span class="topbar-sep">·</span>
+      <span class="topbar-sub" id="topSub">Academy Overview</span>
+    </div>
+    <div class="topbar-right">
+      <div class="role-switch">
+        <button class="role-btn active" data-role="admin">Admin</button>
+        <button class="role-btn" data-role="instructor">Instructor</button>
+        <button class="role-btn" data-role="parent">Parent</button>
+      </div>
+      <button class="tb-icon" aria-label="Notifications">
+        <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>
+        <span class="notif-dot"></span>
+      </button>
+      <div class="avatar-btn">A</div>
+    </div>
+  </header>
+
+  <!-- CONTENT -->
+  <main class="content" id="main">
+
+    <!-- ══════════════════════════════ DASHBOARD ══════════════════════════════ -->
+    <div class="page active" id="page-dashboard">
+
+      <!-- Hero -->
+      <div class="hero-banner">
+        <div class="hero-bg-rings">
+          <div class="hero-ring"></div>
+          <div class="hero-ring"></div>
+          <div class="hero-ring"></div>
+        </div>
+        <div class="hero-glow"></div>
+        <div class="hero-glow2"></div>
+        <div class="hero-content">
+          <div class="hero-eyebrow">Han Taekwondo Korea</div>
+          <div class="hero-title">Digital <span>Dojang</span></div>
+          <div class="hero-meta">
+            <div class="hero-stat"><strong>Friday</strong> 30 May 2026</div>
+            <div class="hero-stat-dot"></div>
+            <div class="hero-stat"><strong>5</strong> classes today</div>
+            <div class="hero-stat-dot"></div>
+            <div class="hero-stat"><strong>74</strong> students expected</div>
+          </div>
+        </div>
+        <div class="hero-badge">
+          <div class="hero-badge-val">91%</div>
+          <div class="hero-badge-label">Avg. Attendance</div>
+        </div>
+      </div>
+
+      <!-- Metrics -->
+      <div class="metrics-row">
+        <div class="metric-card mc-red">
+          <div class="metric-header">
+            <div class="metric-icon"><svg viewBox="0 0 24 24"><circle cx="9" cy="7" r="4"/><path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/><path d="M16 3.1a4 4 0 0 1 0 7.8M21 21v-2a4 4 0 0 0-3-3.9"/></svg></div>
+            <span class="metric-delta d-up">+3</span>
+          </div>
+          <div class="metric-value">48</div>
+          <div class="metric-label">Active Students</div>
+        </div>
+        <div class="metric-card mc-teal">
+          <div class="metric-header">
+            <div class="metric-icon"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></div>
+            <span class="metric-delta d-up">+4%</span>
+          </div>
+          <div class="metric-value">91%</div>
+          <div class="metric-label">Avg. Attendance</div>
+        </div>
+        <div class="metric-card mc-gold">
+          <div class="metric-header">
+            <div class="metric-icon"><svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M2 10h20M6 14h4"/></svg></div>
+            <span class="metric-delta d-up">+8%</span>
+          </div>
+          <div class="metric-value">₩2.4M</div>
+          <div class="metric-label">Monthly Revenue</div>
+        </div>
+        <div class="metric-card mc-ice">
+          <div class="metric-header">
+            <div class="metric-icon"><svg viewBox="0 0 24 24"><rect x="2" y="8" width="20" height="8" rx="2"/><path d="M7 8v8m10-8v8"/></svg></div>
+            <span class="metric-delta d-neu">Due</span>
+          </div>
+          <div class="metric-value">6</div>
+          <div class="metric-label">Promotion Ready</div>
+        </div>
+      </div>
+
+      <!-- Two column -->
+      <div class="two-col">
+        <!-- Schedule -->
+        <div class="card">
+          <div class="card-head">
+            <span class="card-title">Today's Schedule</span>
+            <button class="card-action" onclick="switchView('classes')">View all →</button>
+          </div>
+          <div class="card-body">
+            <div class="schedule">
+              <div class="sched-row">
+                <span class="sched-time">07:00–08:00</span>
+                <div class="sched-block live" style="border-left-color:var(--teal)">
+                  <span class="sched-name">White Belt Foundations</span>
+                  <div class="sched-info"><span class="sched-dot" style="background:var(--teal)"></span>12 · Live</div>
+                </div>
+              </div>
+              <div class="sched-row">
+                <span class="sched-time">09:30–11:00</span>
+                <div class="sched-block" style="border-left-color:var(--gold)">
+                  <span class="sched-name">Yellow–Green Advanced</span>
+                  <div class="sched-info"><span class="sched-dot" style="background:var(--gold)"></span>18 students</div>
+                </div>
+              </div>
+              <div class="sched-row">
+                <span class="sched-time">14:00–15:30</span>
+                <div class="sched-block" style="border-left-color:#46A0FF">
+                  <span class="sched-name">Junior Sparring</span>
+                  <div class="sched-info"><span class="sched-dot" style="background:#46A0FF"></span>10 students</div>
+                </div>
+              </div>
+              <div class="sched-row">
+                <span class="sched-time">16:00–17:30</span>
+                <div class="sched-block" style="border-left-color:var(--crimson)">
+                  <span class="sched-name">Red Belt Poomsae</span>
+                  <div class="sched-info"><span class="sched-dot" style="background:var(--crimson)"></span>8 students</div>
+                </div>
+              </div>
+              <div class="sched-row">
+                <span class="sched-time">18:30–20:00</span>
+                <div class="sched-block" style="border-left-color:var(--muted)">
+                  <span class="sched-name">Black Belt Dan Training</span>
+                  <div class="sched-info"><span class="sched-dot" style="background:var(--muted)"></span>6 students</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Alerts -->
+        <div class="card">
+          <div class="card-head">
+            <span class="card-title">Alerts & Notices</span>
+            <button class="card-action">Dismiss all</button>
+          </div>
+          <div class="card-body">
+            <div class="alerts">
+              <div class="alert a-red">
+                <svg class="alert-ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+                <div class="alert-body"><strong>3 students overdue on fees</strong> — Kim Min-jun, Park Ji-young, Lee Soo-yeon need payment follow-up.</div>
+              </div>
+              <div class="alert a-gold">
+                <svg class="alert-ico" viewBox="0 0 24 24"><path d="M10.3 3.1 2.1 18a2 2 0 0 0 1.8 2.9h16.2a2 2 0 0 0 1.8-2.9L13.7 3.1a2 2 0 0 0-3.4 0z"/><path d="M12 9v4M12 17h.01"/></svg>
+                <div class="alert-body"><strong>Belt grading window opens</strong> — 6 students are eligible. Schedule grading for next week.</div>
+              </div>
+              <div class="alert a-blue">
+                <svg class="alert-ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+                <div class="alert-body"><strong>New student registered</strong> — Oh Hyun-seo (Age 9) joining Monday. Uniform size needed.</div>
+              </div>
+              <div class="alert a-gold">
+                <svg class="alert-ico" viewBox="0 0 24 24"><path d="M10.3 3.1 2.1 18a2 2 0 0 0 1.8 2.9h16.2a2 2 0 0 0 1.8-2.9L13.7 3.1a2 2 0 0 0-3.4 0z"/><path d="M12 9v4M12 17h.01"/></svg>
+                <div class="alert-body"><strong>Saturday AM cover needed</strong> — Instructor Choi unavailable. Open Mat class unassigned.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick attendance snapshot -->
+      <div class="sh"><span class="sh-title">Attendance Snapshot</span><button class="sh-btn" onclick="switchView('attendance')">Full view</button></div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Student</th><th>Belt</th><th>This Week</th><th>Lessons (Month)</th><th>Promotion Status</th></tr></thead>
+          <tbody>
+            <tr><td class="name-cell">Park Ji-young</td><td><span class="belt b-blue"><span class="belt-swatch"></span>Blue</span></td><td><span class="pill p-green">3 / 3</span></td><td class="mono">15 / 15</td><td><span class="pill p-green">Ready ✓</span></td></tr>
+            <tr><td class="name-cell">Choi Do-hyun</td><td><span class="belt b-yellow"><span class="belt-swatch"></span>Yellow</span></td><td><span class="pill p-green">3 / 3</span></td><td class="mono">15 / 15</td><td><span class="pill p-green">Ready ✓</span></td></tr>
+            <tr><td class="name-cell">Kim Min-jun</td><td><span class="belt b-red"><span class="belt-swatch"></span>Red</span></td><td><span class="pill p-green">3 / 3</span></td><td class="mono">12 / 15</td><td><span class="pill p-gold">Near</span></td></tr>
+            <tr><td class="name-cell">Lee Soo-yeon</td><td><span class="belt b-green"><span class="belt-swatch"></span>Green</span></td><td><span class="pill p-red">1 / 3</span></td><td class="mono">9 / 15</td><td><span class="pill p-dim">Not yet</span></td></tr>
+            <tr><td class="name-cell">Yoon Jae-won</td><td><span class="belt b-black"><span class="belt-swatch"></span>Black 1st</span></td><td><span class="pill p-green">2 / 2</span></td><td class="mono">10 / 12</td><td><span class="pill p-blue">Dan exam</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════ STUDENTS ══════════════════════════════ -->
+    <div class="page" id="page-students">
+      <div class="sh"><span class="sh-title">Student Roster</span><button class="sh-btn primary">+ Enrol student</button></div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Student</th><th>Age</th><th>Belt</th><th>Class Group</th><th>Parent / Guardian</th><th>Fee Status</th><th></th></tr></thead>
+          <tbody>
+            <tr><td class="name-cell">Kim Min-jun</td><td>14</td><td><span class="belt b-red"><span class="belt-swatch"></span>Red</span></td><td>Red Belt Poomsae</td><td>Kim Young-ho</td><td><span class="pill p-red">Overdue</span></td><td><button class="sh-btn" style="padding:4px 12px;font-size:11px">View</button></td></tr>
+            <tr><td class="name-cell">Park Ji-young</td><td>16</td><td><span class="belt b-blue"><span class="belt-swatch"></span>Blue</span></td><td>Yellow–Green Adv.</td><td>Park Hye-won</td><td><span class="pill p-green">Paid</span></td><td><button class="sh-btn" style="padding:4px 12px;font-size:11px">View</button></td></tr>
+            <tr><td class="name-cell">Lee Soo-yeon</td><td>11</td><td><span class="belt b-green"><span class="belt-swatch"></span>Green</span></td><td>Yellow–Green Adv.</td><td>Lee Byung-chul</td><td><span class="pill p-red">Overdue</span></td><td><button class="sh-btn" style="padding:4px 12px;font-size:11px">View</button></td></tr>
+            <tr><td class="name-cell">Choi Do-hyun</td><td>9</td><td><span class="belt b-yellow"><span class="belt-swatch"></span>Yellow</span></td><td>White Belt Found.</td><td>Choi Eun-ji</td><td><span class="pill p-green">Paid</span></td><td><button class="sh-btn" style="padding:4px 12px;font-size:11px">View</button></td></tr>
+            <tr><td class="name-cell">Yoon Jae-won</td><td>22</td><td><span class="belt b-black"><span class="belt-swatch"></span>Black 1st Dan</span></td><td>Dan Training</td><td>Self</td><td><span class="pill p-green">Paid</span></td><td><button class="sh-btn" style="padding:4px 12px;font-size:11px">View</button></td></tr>
+            <tr><td class="name-cell">Oh Hyun-seo</td><td>9</td><td><span class="belt b-white"><span class="belt-swatch"></span>White</span></td><td>White Belt Found.</td><td>Oh Seung-min</td><td><span class="pill p-gold">Pending</span></td><td><button class="sh-btn" style="padding:4px 12px;font-size:11px">View</button></td></tr>
+            <tr><td class="name-cell">Jung Ha-na</td><td>13</td><td><span class="belt b-blue"><span class="belt-swatch"></span>Blue</span></td><td>Junior Sparring</td><td>Jung Woo-jin</td><td><span class="pill p-green">Paid</span></td><td><button class="sh-btn" style="padding:4px 12px;font-size:11px">View</button></td></tr>
+            <tr><td class="name-cell">Han Seung-ah</td><td>17</td><td><span class="belt b-red"><span class="belt-swatch"></span>Red</span></td><td>Red Belt Poomsae</td><td>Han Dong-il</td><td><span class="pill p-red">Overdue</span></td><td><button class="sh-btn" style="padding:4px 12px;font-size:11px">View</button></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════ CLASSES ══════════════════════════════ -->
+    <div class="page" id="page-classes">
+      <div class="sh"><span class="sh-title">Class Schedule</span><button class="sh-btn primary">+ New class</button></div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Class Name</th><th>Days</th><th>Time</th><th>Instructor</th><th>Enrolled</th><th>Capacity</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td class="name-cell">White Belt Foundations</td><td class="mono">Mon · Wed · Fri</td><td class="mono">07:00–08:00</td><td>Master Han</td><td>12</td><td>15</td><td><span class="pill p-green">Active</span></td></tr>
+            <tr><td class="name-cell">Yellow–Green Advanced</td><td class="mono">Mon · Wed · Fri</td><td class="mono">09:30–11:00</td><td>Instructor Choi</td><td>18</td><td>20</td><td><span class="pill p-green">Active</span></td></tr>
+            <tr><td class="name-cell">Junior Sparring</td><td class="mono">Tue · Thu</td><td class="mono">14:00–15:30</td><td>Master Han</td><td>10</td><td>12</td><td><span class="pill p-green">Active</span></td></tr>
+            <tr><td class="name-cell">Red Belt Poomsae</td><td class="mono">Tue · Thu · Sat</td><td class="mono">16:00–17:30</td><td>Master Han</td><td>8</td><td>10</td><td><span class="pill p-green">Active</span></td></tr>
+            <tr><td class="name-cell">Black Belt Dan Training</td><td class="mono">Mon · Wed · Sat</td><td class="mono">18:30–20:00</td><td>Master Han</td><td>6</td><td>8</td><td><span class="pill p-green">Active</span></td></tr>
+            <tr><td class="name-cell">Saturday Open Mat</td><td class="mono">Saturday</td><td class="mono">10:00–12:00</td><td>—</td><td>22</td><td>30</td><td><span class="pill p-gold">Cover needed</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════ ATTENDANCE ══════════════════════════════ -->
+    <div class="page" id="page-attendance">
+      <div class="sh"><span class="sh-title">Attendance Engine</span><button class="sh-btn primary">Mark today</button></div>
+      <p style="font-size:13px;color:var(--muted);margin-bottom:20px;line-height:1.6">Promotion eligibility requires <strong style="color:var(--gold);font-weight:700">15 lessons</strong> within the grading window. Students showing the <span style="color:var(--teal)">ready</span> tag are eligible for grading.</p>
+      <div class="att-grid">
+        <div class="att-card ready">
+          <div class="att-name">Park Ji-young</div>
+          <div class="att-belt-wrap"><span class="belt b-blue"><span class="belt-swatch"></span>Blue</span></div>
+          <div class="att-row"><span class="att-lbl">Lessons</span><span class="att-val">15 / 15</span></div>
+          <div class="pbar"><div class="pbar-fill pf-teal" style="width:100%"></div></div>
+          <div class="promo-tag ready">⭐ Promotion ready</div>
+        </div>
+        <div class="att-card ready">
+          <div class="att-name">Choi Do-hyun</div>
+          <div class="att-belt-wrap"><span class="belt b-yellow"><span class="belt-swatch"></span>Yellow</span></div>
+          <div class="att-row"><span class="att-lbl">Lessons</span><span class="att-val">15 / 15</span></div>
+          <div class="pbar"><div class="pbar-fill pf-teal" style="width:100%"></div></div>
+          <div class="promo-tag ready">⭐ Promotion ready</div>
+        </div>
+        <div class="att-card">
+          <div class="att-name">Kim Min-jun</div>
+          <div class="att-belt-wrap"><span class="belt b-red"><span class="belt-swatch"></span>Red</span></div>
+          <div class="att-row"><span class="att-lbl">Lessons</span><span class="att-val">12 / 15</span></div>
+          <div class="pbar"><div class="pbar-fill pf-gold" style="width:80%"></div></div>
+          <div class="promo-tag near">3 more needed</div>
+        </div>
+        <div class="att-card">
+          <div class="att-name">Jung Ha-na</div>
+          <div class="att-belt-wrap"><span class="belt b-blue"><span class="belt-swatch"></span>Blue</span></div>
+          <div class="att-row"><span class="att-lbl">Lessons</span><span class="att-val">13 / 15</span></div>
+          <div class="pbar"><div class="pbar-fill pf-gold" style="width:87%"></div></div>
+          <div class="promo-tag near">2 more needed</div>
+        </div>
+        <div class="att-card">
+          <div class="att-name">Han Seung-ah</div>
+          <div class="att-belt-wrap"><span class="belt b-red"><span class="belt-swatch"></span>Red</span></div>
+          <div class="att-row"><span class="att-lbl">Lessons</span><span class="att-val">11 / 15</span></div>
+          <div class="pbar"><div class="pbar-fill pf-red" style="width:73%"></div></div>
+        </div>
+        <div class="att-card">
+          <div class="att-name">Lee Soo-yeon</div>
+          <div class="att-belt-wrap"><span class="belt b-green"><span class="belt-swatch"></span>Green</span></div>
+          <div class="att-row"><span class="att-lbl">Lessons</span><span class="att-val">9 / 15</span></div>
+          <div class="pbar"><div class="pbar-fill pf-red" style="width:60%"></div></div>
+        </div>
+        <div class="att-card">
+          <div class="att-name">Yoon Jae-won</div>
+          <div class="att-belt-wrap"><span class="belt b-black"><span class="belt-swatch"></span>Black 1st</span></div>
+          <div class="att-row"><span class="att-lbl">Lessons</span><span class="att-val">10 / 12</span></div>
+          <div class="pbar"><div class="pbar-fill pf-teal" style="width:83%"></div></div>
+          <div class="promo-tag dan">Dan exam track</div>
+        </div>
+        <div class="att-card">
+          <div class="att-name">Oh Hyun-seo</div>
+          <div class="att-belt-wrap"><span class="belt b-white"><span class="belt-swatch"></span>White</span></div>
+          <div class="att-row"><span class="att-lbl">Lessons</span><span class="att-val">2 / 15</span></div>
+          <div class="pbar"><div class="pbar-fill pf-dim" style="width:13%"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════ PROGRESS ══════════════════════════════ -->
+    <div class="page" id="page-progress">
+      <div class="sh"><span class="sh-title">Belt Passport</span><button class="sh-btn primary">Schedule grading</button></div>
+      <div class="two-col">
+        <div class="card">
+          <div class="card-head"><span class="card-title">Belt Progression Ladder</span></div>
+          <div class="card-body">
+            <div class="belt-ladder">
+              <div class="bl-row earned"><div class="bl-swatch" style="background:#E0E4F0"></div><span class="bl-name">White Belt</span><span class="bl-req">Entry</span><svg class="bl-ico" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></div>
+              <div class="bl-row earned"><div class="bl-swatch" style="background:var(--gold)"></div><span class="bl-name">Yellow Belt</span><span class="bl-req">15 lessons</span><svg class="bl-ico" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></div>
+              <div class="bl-row earned"><div class="bl-swatch" style="background:#00E664"></div><span class="bl-name">Green Belt</span><span class="bl-req">15 lessons</span><svg class="bl-ico" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></div>
+              <div class="bl-row current"><div class="bl-swatch" style="background:#46A0FF"></div><span class="bl-name">Blue Belt</span><span class="bl-req">15/15 — Ready</span><svg class="bl-ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg></div>
+              <div class="bl-row locked"><div class="bl-swatch" style="background:var(--crimson)"></div><span class="bl-name">Red Belt</span><span class="bl-req">15 lessons req.</span><svg class="bl-ico" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+              <div class="bl-row locked"><div class="bl-swatch" style="background:linear-gradient(135deg,#444,#111);border:1px solid rgba(255,255,255,.2)"></div><span class="bl-name">Black Belt — 1st Dan</span><span class="bl-req">Dan exam req.</span><svg class="bl-ico" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-head"><span class="card-title">Grading Candidates</span></div>
+          <div class="card-body">
+            <div class="table-wrap" style="margin-bottom:0;border:none;border-radius:0;background:transparent">
+              <table>
+                <thead><tr><th>Student</th><th>Current</th><th>Target</th><th>Lessons</th></tr></thead>
+                <tbody>
+                  <tr><td class="name-cell">Park Ji-young</td><td><span class="belt b-blue"><span class="belt-swatch"></span>Blue</span></td><td><span class="belt b-red"><span class="belt-swatch"></span>Red</span></td><td><span class="pill p-green">15/15</span></td></tr>
+                  <tr><td class="name-cell">Choi Do-hyun</td><td><span class="belt b-yellow"><span class="belt-swatch"></span>Yellow</span></td><td><span class="belt b-green"><span class="belt-swatch"></span>Green</span></td><td><span class="pill p-green">15/15</span></td></tr>
+                  <tr><td class="name-cell">Kim Min-jun</td><td><span class="belt b-red"><span class="belt-swatch"></span>Red</span></td><td><span class="belt b-black"><span class="belt-swatch"></span>Black</span></td><td><span class="pill p-gold">12/15</span></td></tr>
+                  <tr><td class="name-cell">Jung Ha-na</td><td><span class="belt b-blue"><span class="belt-swatch"></span>Blue</span></td><td><span class="belt b-red"><span class="belt-swatch"></span>Red</span></td><td><span class="pill p-gold">13/15</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════ PAYMENTS ══════════════════════════════ -->
+    <div class="page" id="page-payments">
+      <div class="sh"><span class="sh-title">Payment Ledger</span><button class="sh-btn primary">+ Record payment</button></div>
+      <div class="pay-summary">
+        <div class="pay-tile pt-teal"><div class="pay-val">₩2.4M</div><div class="pay-lbl">Collected this month</div></div>
+        <div class="pay-tile pt-red"><div class="pay-val">₩360K</div><div class="pay-lbl">Outstanding (3 students)</div></div>
+        <div class="pay-tile pt-gold"><div class="pay-val">₩2.76M</div><div class="pay-lbl">Total expected</div></div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Student</th><th>Period</th><th>Amount</th><th>Method</th><th>Date</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td class="name-cell">Park Ji-young</td><td>May 2026</td><td class="mono">₩120,000</td><td>MTN MoMo</td><td class="mono">2026-05-01</td><td><span class="pill p-green">Paid</span></td></tr>
+            <tr><td class="name-cell">Choi Do-hyun</td><td>May 2026</td><td class="mono">₩120,000</td><td>Bank transfer</td><td class="mono">2026-05-03</td><td><span class="pill p-green">Paid</span></td></tr>
+            <tr><td class="name-cell">Yoon Jae-won</td><td>May 2026</td><td class="mono">₩120,000</td><td>Cash</td><td class="mono">2026-05-02</td><td><span class="pill p-green">Paid</span></td></tr>
+            <tr><td class="name-cell">Jung Ha-na</td><td>May 2026</td><td class="mono">₩120,000</td><td>MTN MoMo</td><td class="mono">2026-05-04</td><td><span class="pill p-green">Paid</span></td></tr>
+            <tr><td class="name-cell">Oh Hyun-seo</td><td>May 2026</td><td class="mono">₩120,000</td><td>MTN MoMo</td><td class="mono">2026-05-10</td><td><span class="pill p-gold">Pending</span></td></tr>
+            <tr><td class="name-cell">Kim Min-jun</td><td>May 2026</td><td class="mono">₩120,000</td><td>—</td><td>—</td><td><span class="pill p-red">Overdue</span></td></tr>
+            <tr><td class="name-cell">Lee Soo-yeon</td><td>May 2026</td><td class="mono">₩120,000</td><td>—</td><td>—</td><td><span class="pill p-red">Overdue</span></td></tr>
+            <tr><td class="name-cell">Han Seung-ah</td><td>May 2026</td><td class="mono">₩120,000</td><td>—</td><td>—</td><td><span class="pill p-red">Overdue</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════ REPORTS ══════════════════════════════ -->
+    <div class="page" id="page-reports">
+      <div class="sh"><span class="sh-title">Reports</span></div>
+      <div class="report-grid">
+        <div class="report-tile">
+          <div class="rt-icon" style="background:var(--crimson-g);color:var(--crimson);border-color:rgba(255,30,60,.2)"><svg viewBox="0 0 24 24"><path d="M8 15v-4m4 4V9m4 6v-2"/><rect x="3" y="3" width="18" height="18" rx="2"/></svg></div>
+          <div class="rt-name">Monthly Summary</div>
+          <div class="rt-desc">Revenue, attendance rates, enrolment changes, and alerts for the current month.</div>
+          <div class="rt-cta">Export PDF <svg style="width:13px;height:13px;display:inline;vertical-align:middle" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        </div>
+        <div class="report-tile">
+          <div class="rt-icon" style="background:var(--gold-g);color:var(--gold);border-color:rgba(255,184,0,.2)"><svg viewBox="0 0 24 24"><rect x="2" y="8" width="20" height="8" rx="2"/><path d="M7 8v8m10-8v8"/></svg></div>
+          <div class="rt-name">Belt Progression</div>
+          <div class="rt-desc">Promotion eligibility, grading history, and belt ladder progress per student.</div>
+          <div class="rt-cta">Export PDF <svg style="width:13px;height:13px;display:inline;vertical-align:middle" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        </div>
+        <div class="report-tile">
+          <div class="rt-icon" style="background:var(--teal-g);color:var(--teal);border-color:rgba(0,229,192,.2)"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></div>
+          <div class="rt-name">Attendance Audit</div>
+          <div class="rt-desc">Per-student lesson counts, absences, and eligibility flags for the grading window.</div>
+          <div class="rt-cta">Export CSV <svg style="width:13px;height:13px;display:inline;vertical-align:middle" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        </div>
+        <div class="report-tile">
+          <div class="rt-icon" style="background:var(--ice-g);color:var(--ice);border-color:rgba(168,212,255,.2)"><svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M2 10h20M6 14h4"/></svg></div>
+          <div class="rt-name">Financial Statement</div>
+          <div class="rt-desc">Full fee collection ledger, outstanding amounts, and MoMo transaction breakdown.</div>
+          <div class="rt-cta">Export XLSX <svg style="width:13px;height:13px;display:inline;vertical-align:middle" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        </div>
+        <div class="report-tile">
+          <div class="rt-icon" style="background:var(--crimson-g);color:var(--crimson);border-color:rgba(255,30,60,.2)"><svg viewBox="0 0 24 24"><circle cx="9" cy="7" r="4"/><path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/></svg></div>
+          <div class="rt-name">Parent Comms Log</div>
+          <div class="rt-desc">Record of portal views, payment reminders sent, and notices issued to families.</div>
+          <div class="rt-cta">View log <svg style="width:13px;height:13px;display:inline;vertical-align:middle" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        </div>
+        <div class="report-tile">
+          <div class="rt-icon" style="background:var(--gold-g);color:var(--gold);border-color:rgba(255,184,0,.2)"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></div>
+          <div class="rt-name">Annual Academy Report</div>
+          <div class="rt-desc">Year-end overview of all KPIs, belt promotions, revenue, and enrolment trends.</div>
+          <div class="rt-cta">Generate <svg style="width:13px;height:13px;display:inline;vertical-align:middle" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════ PARENT PORTAL ══════════════════════════════ -->
+    <div class="page" id="page-parent">
+      <div class="sh"><span class="sh-title">Parent Portal</span><span style="font-size:12px;color:var(--muted)">Mobile preview · Park Ji-young</span></div>
+      <div class="portal-outer">
+        <div class="portal-phone">
+          <div class="portal-notch"></div>
+          <div class="portal-hero">
+            <div class="portal-hero-glow"></div>
+            <div class="portal-avatar">P</div>
+            <div class="portal-name">Park Ji-young</div>
+            <div class="portal-class">
+              <span class="belt b-blue" style="display:inline-flex"><span class="belt-swatch"></span>Blue Belt</span>
+              · Yellow–Green Advanced
+            </div>
+          </div>
+          <div class="portal-body">
+            <div class="portal-stats">
+              <div class="p-stat">
+                <div class="p-stat-val" style="color:var(--teal)">15</div>
+                <div class="p-stat-lbl">Lessons this month</div>
+              </div>
+              <div class="p-stat">
+                <div class="p-stat-val" style="color:var(--gold)">100%</div>
+                <div class="p-stat-lbl">Attendance rate</div>
+              </div>
+            </div>
+            <div class="portal-block">
+              <div class="pb-label">Promotion Status</div>
+              <div style="font-size:13px;color:var(--fg);line-height:1.5;margin-bottom:10px">Ji-young is <strong style="color:var(--teal)">eligible for Red Belt grading</strong>. Next session: <strong>12 June 2026</strong>.</div>
+              <div class="pbar"><div class="pbar-fill pf-teal" style="width:100%"></div></div>
+              <div style="display:flex;justify-content:space-between;margin-top:5px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--dim)"><span>0</span><span>15 / 15 lessons</span></div>
+            </div>
+            <div class="portal-block">
+              <div class="pb-label">Fee Status — May 2026</div>
+              <div style="display:flex;align-items:center;justify-content:space-between">
+                <div>
+                  <div style="font-size:15px;font-weight:700;color:var(--fg);font-family:'Rajdhani',sans-serif;letter-spacing:.5px">₩120,000</div>
+                  <div style="font-size:11.5px;color:var(--teal);margin-top:2px">✓ Paid · MTN MoMo · 2026-05-01</div>
+                </div>
+                <span class="pill p-green">Paid</span>
+              </div>
+            </div>
+            <button class="portal-pay">💳 Pay via MTN MoMo</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════ SETTINGS ══════════════════════════════ -->
+    <div class="page" id="page-settings">
+      <div class="sh"><span class="sh-title">Settings</span></div>
+      <div class="settings-layout">
+        <div class="card">
+          <div class="card-body" style="padding:10px">
+            <div class="settings-nav">
+              <div class="sn-item active"><svg viewBox="0 0 24 24"><path d="M3 9.1 12 3l9 6.1V20a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1z"/></svg>Academy Profile</div>
+              <div class="sn-item"><svg viewBox="0 0 24 24"><circle cx="9" cy="7" r="4"/><path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/></svg>Users & Roles</div>
+              <div class="sn-item"><svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M2 10h20"/></svg>Payment Settings</div>
+              <div class="sn-item"><svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>Notifications</div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-head"><span class="card-title">Academy Profile</span></div>
+          <div class="card-body">
+            <div class="form-grid">
+              <div class="form-2">
+                <div class="form-row"><label class="form-label">Academy Name</label><input class="form-input" value="Han Taekwondo Korea"/></div>
+                <div class="form-row"><label class="form-label">Head Master</label><input class="form-input" value="Master Han"/></div>
+              </div>
+              <div class="form-row"><label class="form-label">Location</label><input class="form-input" value="Seoul, South Korea"/></div>
+              <div class="form-2">
+                <div class="form-row"><label class="form-label">Monthly Fee (₩)</label><input class="form-input" value="120000" type="number"/></div>
+                <div class="form-row"><label class="form-label">Grading Threshold (lessons)</label><input class="form-input" value="15" type="number"/></div>
+              </div>
+              <div class="form-row"><label class="form-label">MTN MoMo Merchant ID</label><input class="form-input" placeholder="Enter merchant ID…"/></div>
+              <div>
+                <button class="save-btn">
+                  <svg viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><path d="M17 21v-8H7v8M7 3v5h8"/></svg>
+                  Save changes
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- MOBILE NAV -->
+<nav class="mobile-nav" aria-label="Mobile navigation">
+  <button class="mob-btn active" data-view="dashboard"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Home</button>
+  <button class="mob-btn" data-view="students"><svg viewBox="0 0 24 24"><circle cx="9" cy="7" r="4"/><path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/></svg>Students</button>
+  <button class="mob-btn" data-view="attendance"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>Attend.</button>
+  <button class="mob-btn" data-view="progress"><svg viewBox="0 0 24 24"><rect x="2" y="8" width="20" height="8" rx="2"/></svg>Belts</button>
+  <button class="mob-btn" data-view="payments"><svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M2 10h20"/></svg>Pay</button>
+</nav>
+
+<script>
+const META = {
+  dashboard:  ['DASHBOARD',    'Academy Overview'],
+  students:   ['STUDENTS',     'Roster & Profiles'],
+  classes:    ['CLASSES',      'Schedule Management'],
+  attendance: ['ATTENDANCE',   'Lesson Tracking Engine'],
+  progress:   ['BELT PROGRESS','Promotion Passport'],
+  payments:   ['PAYMENTS',     'Fee Ledger'],
+  reports:    ['REPORTS',      'Export & Analytics'],
+  parent:     ['PARENT PORTAL','Mobile View'],
+  settings:   ['SETTINGS',     'Configuration'],
+};
+
+function switchView(v) {
+  if (!META[v]) return;
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  const pg = document.getElementById('page-' + v);
+  if (pg) { pg.classList.add('active'); }
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.toggle('active', b.dataset.view === v));
+  document.querySelectorAll('.mob-btn').forEach(b => b.classList.toggle('active', b.dataset.view === v));
+  document.getElementById('topTitle').textContent = META[v][0];
+  document.getElementById('topSub').textContent   = META[v][1];
+  if (window.innerWidth <= 768) document.getElementById('sidebar').classList.remove('open');
+}
+
+document.querySelectorAll('[data-view]').forEach(b => b.addEventListener('click', () => switchView(b.dataset.view)));
+
+document.querySelectorAll('.role-btn').forEach(b => b.addEventListener('click', () => {
+  document.querySelectorAll('.role-btn').forEach(x => x.classList.remove('active'));
+  b.classList.add('active');
+  if (b.dataset.role === 'parent') switchView('parent');
+  else switchView('dashboard');
+}));
+
+document.getElementById('hamburger').addEventListener('click', () => {
+  document.getElementById('sidebar').classList.toggle('open');
+});
+</script>
+</body>
+</html>
