@@ -1,0 +1,1 @@
+window.DojangSidePreview={render:function(){var e=document.getElementById('parentPanel');if(e){e.innerHTML='<div class="phone-shell"><div class="phone-screen"><strong>Portal Preview</strong></div></div>'}}};
