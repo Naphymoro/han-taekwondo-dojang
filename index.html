@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Han Taekwondo Korea | Digital Dojang</title>
+  <meta name="description" content="Digital Dojang management prototype for Han Taekwondo Korea" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <div class="app">
+    <aside class="rail">
+      <img class="logo" src="assets/logo.svg" alt="Han Taekwondo Korea logo" />
+      <nav class="belt-nav" aria-label="Belt navigation">
+        <button class="active"><span class="belt-chip b-white"></span>White</button>
+        <button><span class="belt-chip b-yellow-stripe"></span>Y Stripe</button>
+        <button><span class="belt-chip b-yellow"></span>Yellow</button>
+        <button><span class="belt-chip b-green-stripe"></span>G Stripe</button>
+        <button><span class="belt-chip b-green"></span>Green</button>
+        <button><span class="belt-chip b-blue-stripe"></span>B Stripe</button>
+        <button><span class="belt-chip b-blue"></span>Blue</button>
+        <button><span class="belt-chip b-red-stripe"></span>R Stripe</button>
+        <button><span class="belt-chip b-red"></span>Red</button>
+        <button><span class="belt-chip b-black"></span>Black</button>
+      </nav>
+    </aside>
+
+    <main class="main">
+      <section class="hero">
+        <div class="hero-card glass">
+          <div class="kicker">Han Taekwondo Korea</div>
+          <h1>Digital Dojang Command Center</h1>
+          <p>Premium school operations for schedules, attendance, belt progression, poomsae, promotion readiness, parent visibility, and MTN MoMo payments in RWF.</p>
+          <div class="hero-actions">
+            <button class="btn btn-red">Start Attendance</button>
+            <button class="btn btn-dark">Review Promotions</button>
+          </div>
+        </div>
+        <div class="countdown glass">
+          <h3>Next Promotion Test</h3>
+          <div class="timer">
+            <div class="timebox"><b>12</b><span>Days</span></div>
+            <div class="timebox"><b>08</b><span>Hours</span></div>
+            <div class="timebox"><b>45</b><span>Minutes</span></div>
+          </div>
+          <p class="muted">14 students are almost ready. Fees and instructor approval must be cleared before testing.</p>
+        </div>
+      </section>
+
+      <section class="metrics">
+        <div class="metric"><small>Total Students</small><b id="studentCount">0</b><span class="trend">+6 this month</span></div>
+        <div class="metric"><small>Ready for Testing</small><b id="readyCount">0</b><span class="trend">15 lesson rule active</span></div>
+        <div class="metric"><small>Outstanding Balance</small><b id="balanceTotal">RWF 0</b><span class="trend">MoMo reminders enabled</span></div>
+        <div class="metric"><small>Attendance Today</small><b>87%</b><span class="trend">111 present</span></div>
+      </section>
+
+      <section class="section roadmap glass">
+        <div class="section-head"><h2>Complete Belt Roadmap</h2><span class="muted">Includes intermediate stripe ranks</span></div>
+        <div class="belts" id="beltRoadmap"></div>
+      </section>
+
+      <section class="section split">
+        <div class="glass attendance">
+          <div class="section-head"><h2>Student Progression Cards</h2><span class="muted">Live readiness scoring</span></div>
+          <div class="cards" id="studentCards"></div>
+        </div>
+        <div class="glass passport" id="passport"></div>
+      </section>
+
+      <section class="section split">
+        <div class="glass attendance">
+          <div class="section-head"><h2>Instructor Attendance Board</h2><span class="muted">Today</span></div>
+          <div class="board" id="attendanceBoard"></div>
+        </div>
+        <div class="glass attendance">
+          <div class="section-head"><h2>MTN MoMo Billing</h2><span class="muted">RWF</span></div>
+          <div class="board" id="paymentBoard"></div>
+        </div>
+      </section>
+
+      <section class="section glass attendance">
+        <div class="section-head"><h2>Weekly Dojang Schedule</h2><span class="muted">Classes by program</span></div>
+        <div class="schedule" id="scheduleBoard"></div>
+      </section>
+
+      <section class="section glass attendance">
+        <div class="section-head"><h2>Poomsae Video Library</h2><span class="muted">Training progression</span></div>
+        <div class="poomsae-grid" id="poomsaeLibrary"></div>
+      </section>
+    </main>
+
+    <aside class="phone-wrap">
+      <div class="phone" id="parentPhone"></div>
+    </aside>
+  </div>
+  <script src="js/app.js"></script>
+</body>
+</html>

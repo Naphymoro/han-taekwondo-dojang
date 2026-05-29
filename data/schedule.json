@@ -1,0 +1,58 @@
+[
+  {
+    "day": "Monday",
+    "time": "13:00",
+    "label": "Women's Lesson",
+    "type": "women",
+    "coach": "Master Park"
+  },
+  {
+    "day": "Monday",
+    "time": "17:00",
+    "label": "Kid Lesson",
+    "type": "kid",
+    "coach": "Coach Aline"
+  },
+  {
+    "day": "Tuesday",
+    "time": "16:00",
+    "label": "Little Dragon",
+    "type": "dragon",
+    "coach": "Coach Eric"
+  },
+  {
+    "day": "Tuesday",
+    "time": "19:00",
+    "label": "Sparring Blue+",
+    "type": "spar",
+    "coach": "Master Park"
+  },
+  {
+    "day": "Thursday",
+    "time": "18:00",
+    "label": "Teens & Adults",
+    "type": "adult",
+    "coach": "Master Park"
+  },
+  {
+    "day": "Friday",
+    "time": "17:00",
+    "label": "Kid Lesson",
+    "type": "kid",
+    "coach": "Coach Aline"
+  },
+  {
+    "day": "Saturday",
+    "time": "14:00",
+    "label": "Sparring Blue+",
+    "type": "spar",
+    "coach": "Master Park"
+  },
+  {
+    "day": "Sunday",
+    "time": "11:00",
+    "label": "Kid Lesson",
+    "type": "kid",
+    "coach": "Coach Aline"
+  }
+]

@@ -1,0 +1,46 @@
+[
+  {
+    "studentId": "HTK-1008",
+    "student": "Minho Park",
+    "item": "May Monthly Fee",
+    "category": "Monthly subscription",
+    "amount": 40000,
+    "currency": "RWF",
+    "status": "Overdue",
+    "dueDate": "2025-05-15",
+    "method": "MTN MoMo"
+  },
+  {
+    "studentId": "HTK-1008",
+    "student": "Minho Park",
+    "item": "Promotion Test Fee",
+    "category": "Promotion",
+    "amount": 50000,
+    "currency": "RWF",
+    "status": "Due soon",
+    "dueDate": "2025-05-31",
+    "method": "MTN MoMo"
+  },
+  {
+    "studentId": "HTK-1042",
+    "student": "Niyonsaba Aline",
+    "item": "June Monthly Fee",
+    "category": "Monthly subscription",
+    "amount": 60000,
+    "currency": "RWF",
+    "status": "Paid",
+    "dueDate": "2025-06-15",
+    "method": "MTN MoMo"
+  },
+  {
+    "studentId": "HTK-1077",
+    "student": "Umutoni Diane",
+    "item": "Dobok Uniform",
+    "category": "Uniform",
+    "amount": 30000,
+    "currency": "RWF",
+    "status": "Pending",
+    "dueDate": "2025-05-28",
+    "method": "MTN MoMo"
+  }
+]

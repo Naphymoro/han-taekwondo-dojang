@@ -1,0 +1,47 @@
+[
+  {
+    "belt": "Yellow Stripe",
+    "title": "Kibon Poomsae",
+    "focus": "Basic stance, blocks, discipline"
+  },
+  {
+    "belt": "Yellow Belt",
+    "title": "Taegeuk 1 Jang",
+    "focus": "Heaven and light, walking stance, low block"
+  },
+  {
+    "belt": "Green Stripe",
+    "title": "Taegeuk 2 Jang",
+    "focus": "Lake, front kick, middle punch combinations"
+  },
+  {
+    "belt": "Green Belt",
+    "title": "Taegeuk 3 Jang",
+    "focus": "Fire, knife-hand blocks, rhythm control"
+  },
+  {
+    "belt": "Blue Stripe",
+    "title": "Taegeuk 4 Jang",
+    "focus": "Thunder, side kick, sparring readiness"
+  },
+  {
+    "belt": "Blue Belt",
+    "title": "Taegeuk 5 Jang",
+    "focus": "Wind, elbow strike, power control"
+  },
+  {
+    "belt": "Red Stripe",
+    "title": "Taegeuk 6 Jang",
+    "focus": "Water, turning kick, advanced transitions"
+  },
+  {
+    "belt": "Red Belt",
+    "title": "Taegeuk 7 Jang",
+    "focus": "Mountain, leadership, black belt discipline"
+  },
+  {
+    "belt": "Black Candidate",
+    "title": "Taegeuk 8 Jang",
+    "focus": "Earth, mastery test preparation"
+  }
+]
