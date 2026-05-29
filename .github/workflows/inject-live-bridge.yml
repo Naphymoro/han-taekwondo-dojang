@@ -1,0 +1,46 @@
+name: Inject live Sheets bridge
+
+on:
+  push:
+    branches:
+      - Olympic-redesign
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  inject:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout deployed branch
+        uses: actions/checkout@v4
+        with:
+          ref: Olympic-redesign
+
+      - name: Inject live bridge scripts
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          path = Path('index.html')
+          html = path.read_text(encoding='utf-8')
+          scripts = '''
+<script src="js/academy-config.js"></script>
+<script src="js/academy-api.js"></script>
+<script src="js/live-data-bridge.js"></script>
+'''
+          if 'js/live-data-bridge.js' not in html:
+              html = html.replace('</body>', scripts + '</body>')
+              path.write_text(html, encoding='utf-8')
+              print('Injected live bridge scripts into index.html')
+          else:
+              print('Live bridge scripts already present')
+          PY
+
+      - name: Commit patched index
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git diff --cached --quiet && echo "No changes to commit" || git commit -m "Inject live Sheets bridge into deployed index"
+          git push
