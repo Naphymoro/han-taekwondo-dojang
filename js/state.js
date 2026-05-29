@@ -1,0 +1,1 @@
+window.DojangState={role:'Admin',view:'dashboard'};
