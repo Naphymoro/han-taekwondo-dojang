@@ -4,16 +4,34 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Han Taekwondo Korea | Digital Dojang</title>
-  <meta name="description" content="Accessible Digital Dojang dashboard for Han Taekwondo Korea." />
+  <meta name="description" content="Premium, accessible Taekwondo academy management platform for Han Taekwondo Korea." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body>
+  <svg class="svg-sprite" aria-hidden="true" focusable="false">
+    <symbol id="icon-dashboard" viewBox="0 0 24 24"><path d="M4 13.2 12 5l8 8.2V21h-5v-5.8H9V21H4z"/><path d="M7.5 10.4V5.8h3"/></symbol>
+    <symbol id="icon-students" viewBox="0 0 24 24"><path d="M8.4 11.1a3.4 3.4 0 1 0 0-6.8 3.4 3.4 0 0 0 0 6.8Z"/><path d="M2.8 20.2c.7-3.8 2.6-5.7 5.6-5.7s4.9 1.9 5.6 5.7"/><path d="M16.1 10.8a2.8 2.8 0 1 0 0-5.6"/><path d="M15.4 14.7c2.6.3 4.3 2.1 5 5.5"/></symbol>
+    <symbol id="icon-attendance" viewBox="0 0 24 24"><path d="M5 4.5h14v15H5z"/><path d="M8 8h8M8 12h4"/><path d="m14 15.8 1.6 1.6 3.4-3.8"/></symbol>
+    <symbol id="icon-poomsae" viewBox="0 0 24 24"><path d="M12 3.2 5.8 6.7 12 10l6.2-3.3z"/><path d="M5.8 10.2 12 13.5l6.2-3.3"/><path d="M5.8 13.8 12 17.1l6.2-3.3"/><path d="M12 17.1v3.7"/></symbol>
+    <symbol id="icon-payments" viewBox="0 0 24 24"><path d="M3.8 7.2h16.4v10.6H3.8z"/><path d="M3.8 10.2h16.4"/><path d="M7.2 15h4.8"/></symbol>
+    <symbol id="icon-promotions" viewBox="0 0 24 24"><path d="M12 3.2 15 9l6 .9-4.4 4.2 1.1 6-5.7-3.1-5.7 3.1 1.1-6L3 9.9 9 9z"/></symbol>
+    <symbol id="icon-belts" viewBox="0 0 24 24"><path d="M3.5 9.5h17v5h-17z"/><path d="M8.2 9.5v5M15.8 9.5v5"/><path d="m8.2 14.5-3.4 4.2M15.8 14.5l3.4 4.2"/></symbol>
+    <symbol id="icon-classes" viewBox="0 0 24 24"><path d="M4 5.5h16v14H4z"/><path d="M8 3.5v4M16 3.5v4M4 9h16"/><path d="M8 13h3M13 13h3M8 16h3"/></symbol>
+    <symbol id="icon-parents" viewBox="0 0 24 24"><path d="M8.2 10.8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/><path d="M3.4 19.6c.6-3.4 2.2-5.1 4.8-5.1 1.5 0 2.7.6 3.5 1.8"/><path d="M16.6 12.2a2.7 2.7 0 1 0 0-5.4 2.7 2.7 0 0 0 0 5.4Z"/><path d="M12.3 19.6c.6-3.1 2-4.6 4.3-4.6s3.7 1.5 4.3 4.6"/></symbol>
+    <symbol id="icon-reports" viewBox="0 0 24 24"><path d="M5 4h14v16H5z"/><path d="M8 15.5v-4M12 15.5V8M16 15.5v-6"/></symbol>
+    <symbol id="icon-settings" viewBox="0 0 24 24"><path d="M12 15.4a3.4 3.4 0 1 0 0-6.8 3.4 3.4 0 0 0 0 6.8Z"/><path d="M19.4 13.5v-3l-2.1-.5a7.2 7.2 0 0 0-.8-1.9l1.1-1.9-2.1-2.1-1.9 1.1a7.2 7.2 0 0 0-1.9-.8L11.2 2h-3l-.5 2.1a7.2 7.2 0 0 0-1.9.8L3.9 3.8 1.8 5.9 2.9 7.8a7.2 7.2 0 0 0-.8 1.9L0 10.2v3l2.1.5c.2.7.5 1.3.8 1.9l-1.1 1.9 2.1 2.1 1.9-1.1c.6.3 1.2.6 1.9.8l.5 2.1h3l.5-2.1c.7-.2 1.3-.5 1.9-.8l1.9 1.1 2.1-2.1-1.1-1.9c.3-.6.6-1.2.8-1.9z" transform="translate(2 1) scale(.85)"/></symbol>
+    <symbol id="icon-momo" viewBox="0 0 24 24"><path d="M5 6.2h14a2 2 0 0 1 2 2v7.6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8.2a2 2 0 0 1 2-2Z"/><path d="M7 10.4h5.4M7 13.6h3M16.3 13.7a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z"/></symbol>
+  </svg>
+
   <a class="skip-link" href="#main">Skip to main content</a>
 
   <div class="app-shell">
     <aside class="sidebar" aria-label="Main navigation">
       <div class="brand">
-        <img src="assets/logo.svg" alt="Han Taekwondo Korea logo" />
+        <div class="brand-mark"><img src="assets/logo.svg" alt="Han Taekwondo Korea logo" /></div>
         <div>
           <strong>Han Taekwondo</strong>
           <span>Korea Digital Dojang</span>
@@ -21,31 +39,29 @@
       </div>
 
       <nav class="main-nav">
-        <a class="active" href="#dashboard" aria-current="page">
-          <span aria-hidden="true">⌂</span> Dashboard
-        </a>
-        <a href="#students"><span aria-hidden="true">👥</span> Students</a>
-        <a href="#classes"><span aria-hidden="true">▦</span> Classes</a>
-        <a href="#payments"><span aria-hidden="true">▣</span> Payments</a>
-        <a href="#poomsae"><span aria-hidden="true">🥋</span> Poomsae</a>
-        <a href="#attendance"><span aria-hidden="true">☑</span> Attendance</a>
-        <a href="#reports"><span aria-hidden="true">▥</span> Reports</a>
-        <a href="#settings"><span aria-hidden="true">⚙</span> Settings</a>
+        <a class="active" href="#dashboard" aria-current="page"><svg><use href="#icon-dashboard"></use></svg>Dashboard</a>
+        <a href="#students"><svg><use href="#icon-students"></use></svg>Students</a>
+        <a href="#classes"><svg><use href="#icon-classes"></use></svg>Classes</a>
+        <a href="#payments"><svg><use href="#icon-payments"></use></svg>Payments</a>
+        <a href="#poomsae"><svg><use href="#icon-poomsae"></use></svg>Poomsae</a>
+        <a href="#attendance"><svg><use href="#icon-attendance"></use></svg>Attendance</a>
+        <a href="#reports"><svg><use href="#icon-reports"></use></svg>Reports</a>
+        <a href="#settings"><svg><use href="#icon-settings"></use></svg>Settings</a>
       </nav>
 
       <section class="quick-actions" aria-labelledby="quickActionsTitle">
         <h2 id="quickActionsTitle">Quick Actions</h2>
-        <button type="button">＋ Add Student</button>
-        <button type="button">＋ Record Payment</button>
-        <button type="button">＋ Mark Attendance</button>
-        <button type="button">＋ Add Class</button>
+        <button type="button">Add Student</button>
+        <button type="button">Record MTN MoMo Payment</button>
+        <button type="button">Mark Attendance</button>
+        <button type="button">Schedule Grading</button>
       </section>
 
       <section class="instructor-card" aria-label="Signed in user">
         <div class="avatar">MN</div>
         <div>
           <strong>Master Naphy</strong>
-          <span>Instructor</span>
+          <span>Head Instructor</span>
         </div>
       </section>
     </aside>
@@ -53,186 +69,77 @@
     <main id="main" class="main-content" tabindex="-1">
       <header class="top-header">
         <div>
-          <h1>Welcome back, Master Naphy!</h1>
-          <p>Here’s what’s happening at Han Taekwondo Korea today.</p>
+          <p class="eyebrow">Production concept dashboard</p>
+          <h1>Operate every class, belt, payment, and parent touchpoint from one digital dojang.</h1>
+          <p>Built for instructor speed, parent clarity, and accessible academy operations.</p>
         </div>
 
         <div class="accessibility-controls" aria-label="Accessibility controls">
           <button type="button" id="decreaseText" aria-label="Decrease text size">A−</button>
           <button type="button" id="resetText" aria-label="Reset text size">A</button>
           <button type="button" id="increaseText" aria-label="Increase text size">A+</button>
-          <button type="button" id="themeToggle" aria-pressed="false">☀︎ / 🌙</button>
+          <button type="button" id="themeToggle" aria-pressed="false">Light / Dark</button>
         </div>
       </header>
 
       <section id="dashboard" class="stat-grid" aria-label="Dashboard summary">
-        <article class="stat-card">
-          <div class="stat-icon red">👥</div>
-          <div>
-            <span>Total Students</span>
-            <strong id="totalStudents">0</strong>
-            <small class="positive">▲ 8 this month</small>
-          </div>
-        </article>
-        <article class="stat-card">
-          <div class="stat-icon blue">▦</div>
-          <div>
-            <span>Active Classes</span>
-            <strong id="activeClasses">0</strong>
-            <small class="positive">▲ 2 this month</small>
-          </div>
-        </article>
-        <article class="stat-card">
-          <div class="stat-icon green">▣</div>
-          <div>
-            <span>Payments Due</span>
-            <strong id="paymentsDue">0</strong>
-            <small class="warning">▲ 3 this week</small>
-          </div>
-        </article>
-        <article class="stat-card">
-          <div class="stat-icon purple">🥋</div>
-          <div>
-            <span>Belt Promotions</span>
-            <strong id="promotionsReady">0</strong>
-            <small class="link-like">Next grading: May 25</small>
-          </div>
-        </article>
+        <article class="stat-card"><div class="stat-icon red"><svg><use href="#icon-students"></use></svg></div><div><span>Total Students</span><strong id="totalStudents">0</strong><small>Active academy members</small></div></article>
+        <article class="stat-card"><div class="stat-icon blue"><svg><use href="#icon-attendance"></use></svg></div><div><span>Attendance</span><strong id="attendanceRate">0%</strong><small>Weekly class attendance</small></div></article>
+        <article class="stat-card"><div class="stat-icon gold"><svg><use href="#icon-promotions"></use></svg></div><div><span>Promotion Ready</span><strong id="promotionsReady">0</strong><small>Minimum 15 lessons met</small></div></article>
+        <article class="stat-card"><div class="stat-icon charcoal"><svg><use href="#icon-momo"></use></svg></div><div><span>Payments Due</span><strong id="paymentsDue">0</strong><small>RWF reminders pending</small></div></article>
       </section>
 
       <section class="content-grid">
-        <article id="students" class="panel">
-          <div class="panel-header">
-            <h2>Recent Students</h2>
-            <a href="#">View all</a>
-          </div>
+        <article id="students" class="panel wide-panel">
+          <div class="panel-header"><div><p class="eyebrow">Student management</p><h2>Student command center</h2></div><a href="#">View all</a></div>
           <div id="studentList" class="student-list"></div>
         </article>
 
+        <article id="attendance" class="panel">
+          <div class="panel-header"><div><p class="eyebrow">Promotion readiness</p><h2>Readiness Engine</h2></div><a href="#">Review</a></div>
+          <div id="readinessPanel" class="readiness-panel"></div>
+        </article>
+
         <article id="classes" class="panel">
-          <div class="panel-header">
-            <h2>Today’s Classes</h2>
-            <a href="#">View all</a>
-          </div>
+          <div class="panel-header"><div><p class="eyebrow">Role calendar</p><h2>Today’s classes</h2></div><a href="#">Calendar</a></div>
           <div id="classList" class="class-list"></div>
         </article>
 
         <article id="payments" class="panel">
-          <div class="panel-header">
-            <h2>Payment Overview</h2>
-            <a href="#">View all</a>
-          </div>
-          <div class="payment-overview">
-            <div class="donut" aria-label="Payment status summary">
-              <div>
-                <strong id="donutTotal">0</strong>
-                <span>Students</span>
-              </div>
-            </div>
-            <div id="paymentLegend" class="payment-legend"></div>
-          </div>
+          <div class="panel-header"><div><p class="eyebrow">MTN MoMo</p><h2>Payments</h2></div><a href="#">Invoices</a></div>
+          <div class="payment-overview"><div class="donut" aria-label="Payment status summary"><div><strong id="donutTotal">0</strong><span>Students</span></div></div><div id="paymentLegend" class="payment-legend"></div></div>
         </article>
 
         <article id="reports" class="panel">
-          <div class="panel-header">
-            <h2>Upcoming Events</h2>
-            <a href="#">View all</a>
-          </div>
-          <div class="event-list">
-            <div class="event-item">
-              <div class="date-badge"><span>MAY</span><strong>25</strong></div>
-              <div><strong>Belt Promotion Test</strong><span>Sunday, May 25, 2025 | 2:00 PM</span></div>
-              <span aria-hidden="true">›</span>
-            </div>
-            <div class="event-item">
-              <div class="date-badge"><span>JUN</span><strong>10</strong></div>
-              <div><strong>Dojang In-House Tournament</strong><span>Tuesday, June 10, 2025 | 9:00 AM</span></div>
-              <span aria-hidden="true">›</span>
-            </div>
-            <div class="event-item">
-              <div class="date-badge"><span>JUN</span><strong>20</strong></div>
-              <div><strong>Black Belt Seminar</strong><span>Friday, June 20, 2025 | 6:00 PM</span></div>
-              <span aria-hidden="true">›</span>
-            </div>
-          </div>
+          <div class="panel-header"><div><p class="eyebrow">Academy operations</p><h2>Upcoming events</h2></div><a href="#">Events</a></div>
+          <div id="eventList" class="event-list"></div>
         </article>
 
         <article id="poomsae" class="panel full-width">
-          <div class="panel-header">
-            <h2>Poomsae Progression</h2>
-            <a href="#">View library</a>
-          </div>
+          <div class="panel-header"><div><p class="eyebrow">Belt language</p><h2>Belt roadmap and poomsae library</h2></div><a href="#">Open library</a></div>
+          <div id="beltRoadmap" class="belt-roadmap"></div>
           <div id="poomsaeList" class="poomsae-list"></div>
         </article>
       </section>
     </main>
 
     <aside class="phone-column" aria-label="Parent app preview">
-      <div class="phone-heading">
-        <h2>Parent App Preview</h2>
-        <p>Your dojang in parents’ hands.</p>
-      </div>
-
-      <div class="phone-frame">
-        <div class="phone-screen">
-          <header class="phone-top">
-            <strong>9:41</strong>
-            <span>●●●</span>
-          </header>
-
-          <div class="phone-toolbar">
-            <button type="button" aria-label="Open menu">☰</button>
-            <img src="assets/logo.svg" alt="" />
-            <button type="button" aria-label="Notifications">♧</button>
-          </div>
-
-          <section class="phone-section">
-            <h3>Hello, Parent!</h3>
-            <p>Here’s your child’s overview.</p>
-          </section>
-
-          <div id="phoneChildCard" class="phone-card child-card"></div>
-
-          <section class="phone-section">
-            <div class="phone-section-header">
-              <h3>Upcoming Classes</h3>
-              <a href="#">View all</a>
-            </div>
-            <div id="phoneClasses" class="phone-stack"></div>
-          </section>
-
-          <section class="phone-section">
-            <div class="phone-section-header">
-              <h3>Recent Payments</h3>
-              <a href="#">View all</a>
-            </div>
-            <div id="phonePayments" class="phone-stack"></div>
-          </section>
-
-          <section class="phone-section announcement">
-            <strong>📣 Belt Promotion Test</strong>
-            <span>May 25, 2025 | 2:00 PM</span>
-          </section>
-
-          <nav class="phone-nav" aria-label="Parent app navigation">
-            <a class="active" href="#">Home</a>
-            <a href="#">Classes</a>
-            <a href="#">Payments</a>
-            <a href="#">Profile</a>
-          </nav>
-        </div>
-      </div>
-
-      <div class="phone-controls">
-        <button type="button" id="phoneTheme">☀ Light / Dark Mode</button>
-        <button type="button" id="phoneText">Aᴀ Text Size</button>
-        <button type="button" id="highContrast">◐ High Contrast</button>
-      </div>
+      <div class="phone-heading"><p class="eyebrow">Parent-first portal</p><h2>Mobile preview</h2><p>Payments, class countdowns, attendance, and promotion progress in one parent view.</p></div>
+      <div class="phone-frame"><div class="phone-screen">
+        <header class="phone-top"><strong>9:41</strong><span>LTE</span></header>
+        <div class="phone-toolbar"><button type="button" aria-label="Open menu"><svg><use href="#icon-dashboard"></use></svg></button><img src="assets/logo.svg" alt="" /><button type="button" aria-label="Notifications"><svg><use href="#icon-reports"></use></svg></button></div>
+        <section class="phone-hero"><span>Parent Portal</span><h3>Hello, Amina’s family</h3><p>Next class in 2 days. Promotion test countdown active.</p></section>
+        <div id="phoneChildCard" class="phone-card child-card"></div>
+        <section class="phone-section"><div class="phone-section-header"><h3>Upcoming Classes</h3><a href="#">View</a></div><div id="phoneClasses" class="phone-stack"></div></section>
+        <section class="phone-section"><div class="phone-section-header"><h3>Payment Reminders</h3><a href="#">Pay</a></div><div id="phonePayments" class="phone-stack"></div></section>
+        <section class="phone-section announcement"><strong>Promotion Countdown</strong><span>11 lessons completed. 4 lessons remaining before grading eligibility.</span></section>
+        <nav class="phone-nav" aria-label="Parent app navigation"><a class="active" href="#">Home</a><a href="#">Classes</a><a href="#">Pay</a><a href="#">Progress</a></nav>
+      </div></div>
+      <div id="settings" class="phone-controls"><button type="button" id="phoneTheme">Toggle dark mode</button><button type="button" id="phoneText">Increase text size</button><button type="button" id="highContrast">High contrast mode</button></div>
     </aside>
   </div>
 
-  <footer class="footer">© 2025 Han Taekwondo Korea. Accessible Digital Dojang prototype.</footer>
-
+  <footer class="footer">Han Taekwondo Korea Digital Dojang. Production UI foundation prototype.</footer>
   <script src="js/app.js"></script>
 </body>
 </html>
